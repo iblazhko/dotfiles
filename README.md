@@ -279,3 +279,9 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 ```bash
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
 ```
+
+### PlantUML Prerequisites
+
+```bash
+sudo apt install graphviz openjdk-11-jre-headless
+```
