@@ -1,0 +1,48 @@
+{
+    //--workspace
+    "workbench.colorTheme": "Mariana Midnight",
+    "workbench.startupEditor": "newUntitledFile",
+    //--window
+    "window.zoomLevel": 1,
+    //--editor
+    "editor.fontFamily": "'Input Mono Condensed','Pragmata Pro',monospace",
+    "editor.fontSize": 18,
+    "editor.rulers": [
+        80,
+        100,
+        120,
+        150
+    ],
+    "editor.formatOnPaste": true,
+    "editor.multiCursorModifier": "ctrlCmd",
+    "editor.snippetSuggestions": "top",
+    "editor.formatOnSave": true,
+    "editor.renderWhitespace": "selection",
+    "editor.wordWrapColumn": 100,
+    "editor.fontLigatures": true,
+    "editor.minimap.renderCharacters": false,
+    //--files
+    "files.autoSave": "afterDelay",
+    "files.autoSaveDelay": 2500,
+    "files.exclude": {
+        "**/.idea": true,
+        "**/.ionide": true,
+        "**/.vs": true,
+        "**/bin": true,
+        "**/obj": true
+    },
+    //--Extensions: FSharp
+    "FSharp.fsacRuntime": "netcore",
+    "FSharp.showExplorerOnStartup": false,
+    "omnisharp.enableEditorConfigSupport": true,
+    //--Extensions: Haskell
+    "languageServerHaskell.formattingProvider": "none",
+    //--Extensions: gitlens
+    "gitlens.menus": false,
+    "gitlens.codeLens.enabled": false,
+    "gitlens.currentLine.enabled": false,
+    "gitlens.hovers.currentLine.over": "line",
+    "gitlens.blame.heatmap.enabled": false,
+    "gitlens.blame.highlight.enabled": false,
+    "gitlens.hovers.currentLine.enabled": false
+}

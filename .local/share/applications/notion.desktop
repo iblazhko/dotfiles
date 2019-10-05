@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Notion
+Icon=/opt/notion/resources/app/icon.png
+Exec="/opt/notion/notion" %f
+Comment=Write, plan, collaborate, and get organized.
+Categories=Office;Productivity;
+Terminal=false
