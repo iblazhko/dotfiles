@@ -191,7 +191,6 @@ wget https://github.com/adobe-fonts/source-sans-pro/releases/download/3.006R/sou
 ```bash
 mkdir ~/.local/share/fonts
 
-
 mv OpenType ~/.local/share/fonts/IBM_Plex
 mv Input-Font/Input_Fonts ~/.local/share/fonts/
 mv FiraCode_2/otf ~/.local/share/fonts/FiraCode
@@ -231,10 +230,52 @@ sudo mv todoist-linux-x64 /opt/todoist
 ### Graphics and Photography
 
 ```bash
-sudo apt install -y darktable rapid-photo-downloader gimp dispcalgui hugin 
+sudo apt install -y darktable rapid-photo-downloader libmediainfo0v5 gimp dispcalgui hugin 
 sudo apt install -y clinfo
 ```
 
-### MailSprint
+### MailSpring
 
 Download: <https://updates.getmailspring.com/download?platform=linuxDeb>
+
+### Azure CLI
+
+<https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest>
+
+```bash
+curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+```
+
+Initialize:
+
+```bash
+az login
+```
+
+### Google Cloud Platform SDK
+
+<https://cloud.google.com/sdk/>
+<https://cloud.google.com/sdk/docs/quickstart-debian-ubuntu>
+
+```bash
+# Add the Cloud SDK distribution URI as a package source
+echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+# Import the Google Cloud Platform public key
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
+
+# Update the package list and install the Cloud SDK
+sudo apt update && sudo apt install google-cloud-sdk kubectl
+```
+
+Initialize:
+
+```bash
+gcloud init
+```
+
+After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>, select cluster and view command line to connect:
+
+```bash
+gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
+```
