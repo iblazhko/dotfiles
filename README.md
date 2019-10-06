@@ -34,6 +34,8 @@ sudo apt install \
 
 ### Oh My ZSH
 
+<https://ohmyz.sh/>
+
 ```bash
 sudo apt install -y zsh
 sudo apt install -y git
@@ -41,6 +43,8 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ```
 
 ### Papirus Icons
+
+<https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
 
 ```bash
 sudo add-apt-repository ppa:papirus/papirus
@@ -51,6 +55,8 @@ sudo apt install -y gnome-tweaks
 ```
 
 ### Bitwarden
+
+<https://bitwarden.com/>
 
 ```bash
 cd ~/Downloads
@@ -81,12 +87,21 @@ cat ~/.ssh/ib_thinkpad.pub
 - Sign in to <https://github.com>
 - At <https://github.com/settings/keys>, upload the key above
 
-### VisualStudio Cod:
+### VisualStudio Code:
 
 - <https://code.visualstudio.com/>
 - Download `.deb`, install
 
+#### PlantUML Prerequisites
+
+```bash
+sudo apt install graphviz openjdk-11-jre-headless
+```
+
 ### Sublime Text, Sublime Merge:
+
+- <https://www.sublimetext.com>
+- <https://www.sublimemerge.com>
 
 ```bash
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
@@ -97,9 +112,13 @@ sudo apt install -y sublime-text sublime-merge
 
 ### BeyondCompare
 
-- <https://scootersoftware.com/download.php>, <https://scootersoftware.com/bcompare-4.2.10.23938_amd64.deb>
+- <https://scootersoftware.com>
+- <https://scootersoftware.com/bcompare-4.2.10.23938_amd64.deb>
 
 ### Docker
+
+- <https://docs.docker.com/install/linux/docker-ce/ubuntu>
+- <https://docs.docker.com/install/linux/linux-postinstall>
 
 ```bash
 sudo apt remove -y docker docker-engine docker.io containerd runc
@@ -125,6 +144,8 @@ docker run --rm hello-world
 
 ### .NET Core SDK, PowerShell:
 
+<https://dotnet.microsoft.com/download>
+
 ```bash
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo dpkg -i packages-microsoft-prod.deb
@@ -146,11 +167,16 @@ dotnet --info
 
 ### Haskell:
 
+<https://docs.haskellstack.org>
+
 ```bash
 curl -sSL https://get.haskellstack.org/ | sh
 ```
 
 ### Erlang+Elixir
+
+- <https://www.erlang.org>
+- <https://elixir-lang.org>
 
 ```bash
 sudo apt install -y erlang elixir
@@ -199,6 +225,16 @@ mv source-sans-pro-3.006R/OTF ~/.local/share/fonts/SourceSans
 mv source-serif-pro-3.000R/OTF ~/.local/share/fonts/SourceSerif
 
 fc-cache -f -r -v
+```
+
+### Remmina
+
+<https://remmina.org>
+
+```bash
+sudo apt-add-repository ppa:remmina-ppa-team/remmina-next
+sudo apt update
+sudo apt install -y remmina remmina-plugin-rdp remmina-plugin-secret remmina-plugin-spice
 ```
 
 ### Slack:
@@ -278,10 +314,4 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 
 ```bash
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
-```
-
-### PlantUML Prerequisites
-
-```bash
-sudo apt install graphviz openjdk-11-jre-headless
 ```
