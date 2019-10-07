@@ -121,7 +121,7 @@ sudo apt install -y sublime-text sublime-merge
 - <https://docs.docker.com/install/linux/linux-postinstall>
 
 ```bash
-sudo apt remove -y docker docker-engine docker.io containerd runc
+sudo apt remove -y docker docker-engine docker-compose docker.io containerd runc
 
 sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
@@ -151,11 +151,9 @@ wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-pr
 sudo dpkg -i packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 
-
 sudo add-apt-repository universe
 sudo apt update
 sudo apt install -y apt-transport-https
-sudo apt update
 sudo apt install -y dotnet-sdk-3.0 powershell
 ```
 
@@ -314,4 +312,11 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 
 ```bash
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
+```
+
+### Mount Windows Shares
+
+```bash
+sudo apt install -y cifs-utils
+sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
 ```
