@@ -1,14 +1,25 @@
 {
 	"color_scheme": "Packages/Color Scheme - Default/Mariana.sublime-color-scheme",
-	"font_face": "Input Mono Condensed",
-	"font_size": 16,
+	"folder_exclude_patterns":
+	[
+		".svn",
+		".git",
+		".hg",
+		"CVS",
+		"bin",
+		"obj",
+		".vs",
+		".idea"
+	],
+	"font_face": "Pragmata Pro",
+	"font_size": 14,
 	"highlight_line": true,
 	"ignored_packages":
 	[
 		"Vintage"
 	],
-	"line_padding_bottom": 2,
-	"line_padding_top": 2,
+	"line_padding_bottom": 4,
+	"line_padding_top": 4,
 	"rulers":
 	[
 		80,

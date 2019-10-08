@@ -5,8 +5,9 @@
     //--window
     "window.zoomLevel": 1,
     //--editor
-    "editor.fontFamily": "'Input Mono Condensed','Pragmata Pro',monospace",
+    "editor.fontFamily": "'Pragmata Pro','Input Mono Condensed',monospace",
     "editor.fontSize": 18,
+    "editor.lineHeight": 26,
     "editor.rulers": [
         80,
         100,
