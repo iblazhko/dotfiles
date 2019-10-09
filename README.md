@@ -1,6 +1,6 @@
 # dotfiles
 
-Scripts and configurations for setting up my Ubuntu Budgie environment.
+Scripts and configurations for setting up my Linux environment.
 
 ## Install log
 
@@ -329,3 +329,17 @@ curl -fsSL https://get.pulumi.com | sh
 sudo apt install -y cifs-utils
 sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
 ```
+
+### Open Broadcaster Software
+
+<https://obsproject.com/>
+
+```bash
+sudo apt install -y ffmpeg
+
+sudo add-apt-repository ppa:obsproject/obs-studio
+sudo apt install -y obs-studio
+```
+
+Note: hardware encoding (HVEC) does not seem to work on Lenovo ThinkPad T470p
+(NVIDIA).
