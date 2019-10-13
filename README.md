@@ -184,8 +184,22 @@ sudo apt install -y erlang elixir
 ### NodeJS+NPM+Yarn
 
 ```bash
-sudo apt install -y nodejs npm yarn
+sudo apt install -y nodejs npm
 ```
+
+#### Yarn
+
+<https://yarnpkg.com/en/docs/install>
+
+```bash
+curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+
+
+sudo apt update
+sudo apt install -y yarn
+```
+
 
 ### JetBrains Rider:
 
@@ -357,4 +371,28 @@ sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD
 sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
 
 sudo apt install r-base
+```
+
+### Postman+Newman
+
+<https://www.getpostman.com/>
+
+Postman:
+
+```bash
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tgz
+tar xvfz postman.tgz
+sudo mv Postman /opt/postman
+```
+
+Newman:
+
+```bash
+npm install -g newman
+```
+
+### UI Tweaks
+
+```bash
+gsettings set org.gnome.desktop.interface cursor-size 32
 ```
