@@ -63,8 +63,7 @@ sudo apt install -y gnome-tweaks
 cd ~/Downloads
 wget https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb
 mv 'index.html?app=desktop&platform=linux&variant=deb' bitwarden.deb
-sudo dpkg -i bitwarden.deb
-sudo apt --fix-broken install -y
+sudo apt install ./bitwarden.deb
 rm bitwarden.deb
 ```
 
@@ -149,7 +148,7 @@ docker run --rm hello-world
 
 ```bash
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo dpkg -i packages-microsoft-prod.deb
+sudo apt install ./packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 
 sudo add-apt-repository universe
@@ -164,7 +163,17 @@ Verify the installation:
 dotnet --info
 ```
 
-### Haskell:
+
+### Rust
+
+- <https://www.rust-lang.org>
+- <https://www.rust-lang.org/tools/install>
+
+```bash
+curl https://sh.rustup.rs -sSf | sh
+```
+
+### Haskell
 
 <https://docs.haskellstack.org>
 
@@ -201,7 +210,7 @@ sudo apt install -y yarn
 ```
 
 
-### JetBrains Rider:
+### JetBrains Rider
 
 - download from <https://www.jetbrains.com/rider/download>
 - unpack and move to `/opt/jetbrains_rider`
@@ -250,11 +259,11 @@ sudo apt update
 sudo apt install -y remmina remmina-plugin-rdp remmina-plugin-secret remmina-plugin-spice
 ```
 
-### Slack:
+### Slack
 
 Download: <https://slack.com/intl/en-gb/downloads/linux>
 
-### Notion:
+### Notion
 
 Install `nativefier`:
 
