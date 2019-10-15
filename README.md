@@ -400,6 +400,16 @@ Newman:
 npm install -g newman
 ```
 
+### MineTime
+
+MineTime calendar: <https://minetime.ai/>
+
+```bash
+wget https://minetime-deploy.herokuapp.com/download/linux_deb_64 -O minetime.deb
+sudo dpkg -i minetime.deb
+rm minetime.deb
+```
+
 ### UI Tweaks
 
 ```bash
