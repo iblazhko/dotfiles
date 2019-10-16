@@ -71,15 +71,22 @@ rm bitwarden.deb
 
 - enable FireFox sync
 - set DuckDuckGo as default search engine
+- extensions (should already be enabled via FireFox sync):
+  - uBlock Origin
+  - Bitwarden
+  - HTTPS Everywhere
+  - Fixed Zoom
+  - Enchancer for YouTube
+  - h264ify
 
 ### SSH Key
 
 Generate SSH key:
 
 ```bash
-ssh-keygen -f ~/.ssh/ib_thinkpad -t rsa -b 4096 -c "<email>"
+ssh-keygen -f ~/.ssh/some_name -t rsa -b 4096 -c "some_email"
 echo "Public key:"
-cat ~/.ssh/ib_thinkpad.pub
+cat ~/.ssh/some_name.pub
 ```
 
 #### GitHub
@@ -163,7 +170,6 @@ Verify the installation:
 dotnet --info
 ```
 
-
 ### Rust
 
 - <https://www.rust-lang.org>
@@ -208,7 +214,6 @@ echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/source
 sudo apt update
 sudo apt install -y yarn
 ```
-
 
 ### JetBrains Rider
 
@@ -296,6 +301,67 @@ sudo apt install -y clinfo
 
 Download: <https://updates.getmailspring.com/download?platform=linuxDeb>
 
+### MineTime
+
+MineTime calendar: <https://minetime.ai/>
+
+```bash
+wget https://minetime-deploy.herokuapp.com/download/linux_deb_64 -O minetime.deb
+sudo dpkg -i minetime.deb
+rm minetime.deb
+```
+
+**NOTE**: For FastMail CalDAV use server URL
+`https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
+
+
+### Open Broadcaster Software
+
+<https://obsproject.com/>
+
+```bash
+sudo apt install -y ffmpeg
+
+sudo add-apt-repository ppa:obsproject/obs-studio
+sudo apt install -y obs-studio
+```
+
+Note: hardware encoding (HVEC) does not seem to work on Lenovo ThinkPad T470p
+(NVIDIA).
+
+### R
+
+- <https://www.r-project.org/>
+- <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
+- <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
+
+```bash
+sudo apt install apt-transport-https software-properties-common
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
+
+sudo apt install r-base
+```
+
+### Postman+Newman
+
+<https://www.getpostman.com/>
+
+Postman:
+
+```bash
+wget https://dl.pstmn.io/download/latest/linux64 -O postman.tgz
+tar xvfz postman.tgz
+sudo mv Postman /opt/postman
+```
+
+Newman:
+
+```bash
+npm install -g newman
+```
+
 ### Azure CLI
 
 <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest>
@@ -351,63 +417,6 @@ curl -fsSL https://get.pulumi.com | sh
 ```bash
 sudo apt install -y cifs-utils
 sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
-```
-
-### Open Broadcaster Software
-
-<https://obsproject.com/>
-
-```bash
-sudo apt install -y ffmpeg
-
-sudo add-apt-repository ppa:obsproject/obs-studio
-sudo apt install -y obs-studio
-```
-
-Note: hardware encoding (HVEC) does not seem to work on Lenovo ThinkPad T470p
-(NVIDIA).
-
-### R
-
-- <https://www.r-project.org/>
-- <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
-- <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
-
-```bash
-sudo apt install apt-transport-https software-properties-common
-
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
-
-sudo apt install r-base
-```
-
-### Postman+Newman
-
-<https://www.getpostman.com/>
-
-Postman:
-
-```bash
-wget https://dl.pstmn.io/download/latest/linux64 -O postman.tgz
-tar xvfz postman.tgz
-sudo mv Postman /opt/postman
-```
-
-Newman:
-
-```bash
-npm install -g newman
-```
-
-### MineTime
-
-MineTime calendar: <https://minetime.ai/>
-
-```bash
-wget https://minetime-deploy.herokuapp.com/download/linux_deb_64 -O minetime.deb
-sudo dpkg -i minetime.deb
-rm minetime.deb
 ```
 
 ### UI Tweaks
