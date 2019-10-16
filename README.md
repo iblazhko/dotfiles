@@ -268,35 +268,6 @@ sudo apt install -y remmina remmina-plugin-rdp remmina-plugin-secret remmina-plu
 
 Download: <https://slack.com/intl/en-gb/downloads/linux>
 
-### Notion
-
-Install `nativefier`:
-
-```bash
-sudo npm install nativefier -g
-```
-
-Create electron wrapper:
-
-```bash
-nativefier --name Notion https://www.notion.so
-sudo mv notion-linux-x64 /opt/notion
-```
-
-### Todoist
-
-```bash
-nativefier --name Todoist https://todoist.com/app
-sudo mv todoist-linux-x64 /opt/todoist
-```
-
-### Graphics and Photography
-
-```bash
-sudo apt install -y darktable rapid-photo-downloader libmediainfo0v5 gimp dispcalgui hugin 
-sudo apt install -y clinfo
-```
-
 ### MailSpring
 
 Download: <https://updates.getmailspring.com/download?platform=linuxDeb>
@@ -314,6 +285,34 @@ rm minetime.deb
 **NOTE**: For FastMail CalDAV use server URL
 `https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
 
+### Notion
+
+Install `nativefier`:
+
+```bash
+sudo npm install nativefier -g
+```
+
+Create electron wrapper:
+
+```bash
+nativefier --name Notion https://www.notion.so
+sudo mv notion-linux-x64 /opt/notion
+```
+
+### Remember the Milk
+
+```bash
+nativefier --name remember_the_milk --zoom 1.25 https://www.rememberthemilk.com/app
+sudo mv remember_the_milk /opt/remember_the_milk
+```
+
+### Graphics and Photography
+
+```bash
+sudo apt install -y darktable rapid-photo-downloader libmediainfo0v5 gimp dispcalgui hugin 
+sudo apt install -y clinfo
+```
 
 ### Open Broadcaster Software
 
