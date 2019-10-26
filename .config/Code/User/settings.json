@@ -1,13 +1,13 @@
 {
     //--workspace
-    "workbench.colorTheme": "Mariana Midnight",
+    "workbench.colorTheme": "Mariana Pro (Cool)",
     "workbench.startupEditor": "newUntitledFile",
     //--window
-    "window.zoomLevel": 1,
+    "window.zoomLevel": 2,
     //--editor
-    "editor.fontFamily": "'Pragmata Pro','Input Mono Condensed',monospace",
-    "editor.fontSize": 18,
-    "editor.lineHeight": 26,
+    "editor.fontFamily": "'PragmataPro Mono Liga','Input Mono Condensed',monospace",
+    "editor.fontSize": 16,
+    "editor.lineHeight": 24,
     "editor.rulers": [
         80,
         100,

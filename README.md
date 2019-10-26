@@ -84,7 +84,7 @@ rm bitwarden.deb
 Generate SSH key:
 
 ```bash
-ssh-keygen -f ~/.ssh/some_name -t rsa -b 4096 -c "some_email"
+ssh-keygen -f ~/.ssh/some_name -t rsa -b 4096 -C "some_email"
 echo "Public key:"
 cat ~/.ssh/some_name.pub
 ```
@@ -149,25 +149,41 @@ Re-login, then verify the installation:
 docker run --rm hello-world
 ```
 
-### .NET Core SDK, PowerShell:
+### .NET Core SDK
 
-<https://dotnet.microsoft.com/download>
+<https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script>
 
 ```bash
-wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo apt install ./packages-microsoft-prod.deb
-rm packages-microsoft-prod.deb
-
-sudo add-apt-repository universe
-sudo apt update
 sudo apt install -y apt-transport-https
-sudo apt install -y dotnet-sdk-3.0 powershell
+
+wget https://dot.net/v1/dotnet-install.sh
+chmod +x ./dotnet-install.sh
+
+
+sudo ./dotnet-install.sh --version 2.2.402 --install-dir /opt/dotnet
+sudo ./dotnet-install.sh --version 3.0.100 --install-dir /opt/dotnet
+
+sudo echo 'export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"' > /etc/profile.d/dotnet-path.sh
+
+source /etc/profile
 ```
 
 Verify the installation:
 
 ```bash
 dotnet --info
+```
+
+### PowerShell:
+
+<https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-6>
+
+```bash
+wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+sudo apt install ./packages-microsoft-prod.deb
+rm packages-microsoft-prod.deb
+
+sudo apt install -y powershell
 ```
 
 ### Rust
@@ -199,7 +215,11 @@ sudo apt install -y erlang elixir
 ### NodeJS+NPM+Yarn
 
 ```bash
-sudo apt install -y nodejs npm
+wget https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.xz
+tar xvf node-v12.13.0-linux-x64.tar.xz
+
+sudo mv node-v12.13.0-linux-x64 /opt/nodejs
+sudo echo 'export PATH="$PATH:/opt/nodejs/bin"' > /etc/profile.d/nodejs-path.sh
 ```
 
 #### Yarn
@@ -209,7 +229,6 @@ sudo apt install -y nodejs npm
 ```bash
 curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
 echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
 
 sudo apt update
 sudo apt install -y yarn
