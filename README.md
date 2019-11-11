@@ -203,13 +203,29 @@ curl https://sh.rustup.rs -sSf | sh
 curl -sSL https://get.haskellstack.org/ | sh
 ```
 
-### Erlang+Elixir
+### Scala/SBT
 
-- <https://www.erlang.org>
-- <https://elixir-lang.org>
+- <https://www.scala-lang.org/>
+- <https://www.scala-sbt.org/download.html>
 
 ```bash
-sudo apt install -y erlang elixir
+echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+sudo apt update
+sudo apt install sbt
+```
+
+### Erlang+Elixir
+
+<https://elixir-lang.org/install.html>
+
+```bash
+wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+sudo dpkg -i erlang-solutions_2.0_all.deb
+rm erlang-solutions_2.0_all.deb
+
+sudo apt update
+sudo apt install esl-erlang elixir
 ```
 
 ### NodeJS+NPM+Yarn
@@ -238,6 +254,16 @@ sudo apt install -y yarn
 
 - download from <https://www.jetbrains.com/rider/download>
 - unpack and move to `/opt/jetbrains_rider`
+
+### JetBrains IDEA
+
+- download from <https://www.jetbrains.com/idea/download>
+- unpack and move to `/opt/jetbrains_idea`
+
+### JetBrains DataGrip
+
+- download from <https://www.jetbrains.com/datagrip/download>
+- unpack and move to `/opt/jetbrains_datagrip`
 
 ### Fonts
 
