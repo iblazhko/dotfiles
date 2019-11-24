@@ -33,6 +33,51 @@ sudo apt install \
  -y
  ```
 
+### Video drivers
+
+#### NVIDIA
+
+In "Software & Updates" settings / "Additional Drivers" select latest NVIDIA
+driver package; apply; reboot.
+
+This will install both graphics and OpenCL drivers.
+
+#### Intel OpenCL
+
+<https://github.com/intel/compute-runtime>
+
+```bash
+mkdir neo
+
+cd neo
+wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-gmmlib_19.3.4_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-igc-core_1.0.2878_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-igc-opencl_1.0.2878_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-opencl_19.46.14807_amd64.deb
+wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-ocloc_19.46.14807_amd64.deb
+
+wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/ww46.sum
+sha256sum -c ww46.sum
+
+sudo dpkg -i *.deb
+```
+
+#### AMD OpenCL
+
+Download drivers package from <https://www.amd.com/en/support/>.
+
+- AMD RX 580:
+  - <https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-580>
+  - <https://drivers.amd.com/drivers/linux/amdgpu-pro-19.30-934563-ubuntu-18.04.tar.xz>
+
+Uncompress the package.
+
+From the drivers directory, run
+
+```bash
+./amdgpu-install -y --opencl=pal,legacy --headless
+```
+
 ### SSH Key
 
 Generate SSH key:
@@ -576,5 +621,4 @@ sudo add-apt-repository ppa:obsproject/obs-studio
 sudo apt install -y obs-studio
 ```
 
-Note: hardware encoding (HVEC) does not seem to work on Lenovo ThinkPad T470p
-(NVIDIA).
+**Note:** Use advanced recording settings and select `FFMPEG VAAPI` encoder.
