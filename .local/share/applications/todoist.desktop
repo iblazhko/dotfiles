@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=Todoist
-Icon=/opt/todoist/resources/app/icon.png
-Exec="/opt/todoist/todoist" %f
-Comment=Todoist keeps track of all your tasks, projects, and goals in one beautifully simple place.
-Categories=Office;Productivity;
-Terminal=false

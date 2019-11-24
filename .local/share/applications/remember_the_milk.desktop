@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Remember the Milk
+Icon=/opt/remember_the_milk/resources/app/icon.png
+Exec="/opt/remember_the_milk/remember-the-milk" %f
+Comment=Remember the Milk.
+Categories=Office;Productivity;
+Terminal=false
