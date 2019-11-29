@@ -4,14 +4,14 @@ Scripts and configurations for setting up my Linux environment.
 
 ## Operating system installation
 
-Download Ubuntu Budgie from <https://ubuntubudgie.org/>.
+Download Ubuntu Desktop from <https://ubuntu.com/download/desktop>.
 Use <https://www.balena.io/etcher/> to make bootable USB drive.
 
 It is recommended to install latest LTS version. At the moment of writing LTS version is `18.04.3`.
 
 During installation enable disk encryption.
 
-### Post-installation steps
+### Various software packages
 
 ```bash
 sudo apt update
@@ -42,7 +42,14 @@ driver package; apply; reboot.
 
 This will install both graphics and OpenCL drivers.
 
+At the moment of writing NVIDIA driver package is `nvidia-driver-435`.
+
+**NOTE:** When using AMD eGPU to drive external monitor, I found that it is best to use integrated Intel card and not the NVIDIA card.
+In "NVIDIA X Server" application, in "PRIME Profiles" select "Intel (Power Saving Mode)" and re-login.
+
 #### Intel OpenCL
+
+Install OpenCL drivers for integrated Intel video card.
 
 <https://github.com/intel/compute-runtime>
 
@@ -64,11 +71,11 @@ sudo dpkg -i *.deb
 
 #### AMD OpenCL
 
+Install OpenCL drivers for external AMD video card.
+
 Download drivers package from <https://www.amd.com/en/support/>.
 
-- AMD RX 580:
-  - <https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-580>
-  - <https://drivers.amd.com/drivers/linux/amdgpu-pro-19.30-934563-ubuntu-18.04.tar.xz>
+Download link for AMD RX 580: <https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-580>
 
 Uncompress the package.
 
@@ -93,8 +100,7 @@ cat ~/.ssh/some_name.pub
 <https://ohmyz.sh/>
 
 ```bash
-sudo apt install -y zsh
-sudo apt install -y git
+sudo apt install -y zsh git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
@@ -105,12 +111,12 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ```bash
 sudo add-apt-repository ppa:papirus/papirus
 sudo apt update
-sudo apt install -y papirus-icon-theme
-
-sudo apt install -y gnome-tweaks
+sudo apt install -y papirus-icon-theme gnome-tweaks
 ```
 
 ### Mount Windows Shares
+
+Example of using a Windows file share:
 
 ```bash
 sudo apt install -y cifs-utils
@@ -119,7 +125,48 @@ sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
 
 ### UI Tweaks
 
-- Set UI theme to `Pocilo-light`
+
+#### Pop GTK theme
+
+<https://github.com/pop-os/gtk-theme>
+
+```bash
+sudo apt install sassc meson libglib2.0-dev
+
+# Optional:
+sudo apt install inkscape optipng
+
+# Optional:
+sudo apt remove pop-gtk-theme
+sudo rm -rf /usr/share/themes/Pop*
+rm -rf ~/.local/share/themes/Pop*
+rm -rf ~/.themes/Pop*
+
+git clone https://github.com/pop-os/gtk-theme
+cd gtk-theme
+
+meson build && cd build
+ninja
+sudo ninja install
+```
+
+#### GNOME Extensions
+
+<https://extensions.gnome.org>
+
+- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
+- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
+- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
+- [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
+- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
+- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
+- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
+
+#### UI settings
+
+GNOME Tweaks:
+
+- Set UI theme to `Pop`
 - Set icons theme to `Papirus`
 
 Increase cursor size:
@@ -128,15 +175,6 @@ Increase cursor size:
 gsettings set org.gnome.desktop.interface cursor-size 32
 ```
 
-### Budgie System Monitor
-
-From "Budgie Applets", install "System monitor" applet.
-
-Set output format to
-
-```txt
-cpu: {cpu} | mem: {mem} | temp: {cputemp}
-```
 
 ### Cleanup
 
@@ -148,11 +186,8 @@ Remove Snap:
 sudo apt remove snapd
 ```
 
+
 ## Software
-
-### uLauncher
-
-<https://ulauncher.io/>
 
 ### Bitwarden
 
@@ -219,7 +254,7 @@ cp .config/sublime-text-3/Packages/User/Preferences.sublime-settings ~/.config/s
 ### BeyondCompare
 
 - <https://scootersoftware.com>
-- <https://scootersoftware.com/bcompare-4.2.10.23938_amd64.deb>
+- Download `.deb`, install
 
 ### Docker
 
@@ -233,12 +268,11 @@ sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo apt update
 
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose
 
 sudo systemctl enable docker
-
-# sudo groupadd docker
 sudo usermod -aG docker $USER
 ```
 
@@ -258,11 +292,10 @@ sudo apt install -y apt-transport-https
 wget https://dot.net/v1/dotnet-install.sh
 chmod +x ./dotnet-install.sh
 
-
 sudo ./dotnet-install.sh --version 2.2.402 --install-dir /opt/dotnet
 sudo ./dotnet-install.sh --version 3.0.100 --install-dir /opt/dotnet
 
-echo 'export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"' | sudo tee /etc/profile.d/dotnet-path.sh
+echo 'export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"\nexport DOTNET_ROOT=/opt/dotnet' | sudo tee /etc/profile.d/dotnet-path.sh
 source /etc/profile.d/dotnet-path.sh
 ```
 
@@ -281,6 +314,7 @@ wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-pr
 sudo apt install ./packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 
+sudo apt update
 sudo apt install -y powershell
 ```
 
@@ -309,6 +343,7 @@ curl -sSL https://get.haskellstack.org/ | sh
 ```bash
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
 curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+
 sudo apt update
 sudo apt install sbt
 ```
@@ -333,19 +368,7 @@ wget https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.xz
 tar xvf node-v12.13.0-linux-x64.tar.xz
 
 sudo mv node-v12.13.0-linux-x64 /opt/nodejs
-sudo echo 'export PATH="$PATH:/opt/nodejs/bin"' > /etc/profile.d/nodejs-path.sh
-```
-
-#### [?] Yarn
-
-<https://yarnpkg.com/en/docs/install>
-
-```bash
-curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
-sudo apt update
-sudo apt install -y yarn
+echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs-path.sh
 ```
 
 ### [?] R
@@ -380,7 +403,9 @@ cp .local/share/applications/postman.desktop ~/.local/share/applications/
 Newman:
 
 ```bash
-sudo npm install -g newman
+sudo -i
+source /etc/profile.d/nodejs-path.sh
+npm install -g newman
 ```
 
 ### Azure CLI
@@ -524,7 +549,9 @@ rm minetime.deb
 #### Prerequisite: `nativefier`
 
 ```bash
-sudo npm install nativefier -g
+sudo -i
+source /etc/profile.d/nodejs-path.sh
+npm install -g nativefier
 ```
 
 #### Notion
@@ -555,7 +582,7 @@ cp .local/share/applications/remember_the_milk.desktop ~/.local/share/applicatio
 
 ```bash
 nativefier --name fastmail --zoom 1.25 https://www.fastmail.com
-sudo mv fastmail-x64 /opt/fastmail
+sudo mv fastmail-linux-x64 /opt/fastmail
 ```
 
 ```bash
@@ -584,15 +611,19 @@ sudo apt-get update
 sudo apt-get install darktable
 ```
 
+To verify that OpenCL is supported:
+
 ```bash
 sudo apt install -y clinfo
+clinfo
 ```
+
+In Darktable preferences OpenCL support should be enabled.
 
 #### Rapid Photo Downloader, GIMP, Hugin
 
 ```bash
 sudo apt install -y rapid-photo-downloader libmediainfo0v5 gimp hugin
-sudo apt install -y clinfo
 ```
 
 ### Media
