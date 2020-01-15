@@ -4,10 +4,10 @@ Scripts and configurations for setting up my Linux environment.
 
 ## Operating system installation
 
-Download Ubuntu Desktop from <https://ubuntu.com/download/desktop>.
-Use <https://www.balena.io/etcher/> to make bootable USB drive.
+Download Elementary OS from <https://elementary.io>.
+To make bootable USB drive use <https://rufus.ie/> on Windows or <https://www.balena.io/etcher/> on macOS / Linux.
 
-It is recommended to install latest LTS version. At the moment of writing LTS version is `18.04.3`.
+At the moment of writing ElementaryOS version is `5.1 Hera`.
 
 During installation enable disk encryption.
 
@@ -27,7 +27,6 @@ sudo apt install \
  p7zip \
  htop \
  synaptic \
- tilix \
  vim \
  firefox \
  -y
@@ -44,30 +43,13 @@ This will install both graphics and OpenCL drivers.
 
 At the moment of writing NVIDIA driver package is `nvidia-driver-435`.
 
-**NOTE:** When using AMD eGPU to drive external monitor, I found that it is best to use integrated Intel card and not the NVIDIA card.
-In "NVIDIA X Server" application, in "PRIME Profiles" select "Intel (Power Saving Mode)" and re-login.
-
 #### Intel OpenCL
 
 Install OpenCL drivers for integrated Intel video card.
 
 <https://github.com/intel/compute-runtime>
 
-```bash
-mkdir neo
-
-cd neo
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-gmmlib_19.3.4_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-igc-core_1.0.2878_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-igc-opencl_1.0.2878_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-opencl_19.46.14807_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-ocloc_19.46.14807_amd64.deb
-
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/ww46.sum
-sha256sum -c ww46.sum
-
-sudo dpkg -i *.deb
-```
+Follow instructions in the latest release.
 
 #### AMD OpenCL
 
@@ -79,10 +61,23 @@ Download link for AMD RX 580: <https://www.amd.com/en/support/graphics/radeon-50
 
 Uncompress the package.
 
+In the `amdgpu-install` script add `elementary` to the list of supported distributions (around L134)
+
+```bash
+function os_release() {
+	if [[ -r  /etc/os-release ]]; then
+		. /etc/os-release
+
+		case "$ID" in
+		ubuntu|linuxmint|debian|elementary)
+			:
+			;;
+```
+
 From the drivers directory, run
 
 ```bash
-./amdgpu-install -y --opencl=pal,legacy --headless
+./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
 ```
 
 ### SSH Key
@@ -103,89 +98,6 @@ cat ~/.ssh/some_name.pub
 sudo apt install -y zsh git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
-
-### Papirus Icons
-
-<https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
-
-```bash
-sudo add-apt-repository ppa:papirus/papirus
-sudo apt update
-sudo apt install -y papirus-icon-theme gnome-tweaks
-```
-
-### Mount Windows Shares
-
-Example of using a Windows file share:
-
-```bash
-sudo apt install -y cifs-utils
-sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
-```
-
-### UI Tweaks
-
-
-#### Pop GTK theme
-
-<https://github.com/pop-os/gtk-theme>
-
-```bash
-sudo apt install sassc meson libglib2.0-dev
-
-# Optional:
-sudo apt install inkscape optipng
-
-# Optional:
-sudo apt remove pop-gtk-theme
-sudo rm -rf /usr/share/themes/Pop*
-rm -rf ~/.local/share/themes/Pop*
-rm -rf ~/.themes/Pop*
-
-git clone https://github.com/pop-os/gtk-theme
-cd gtk-theme
-
-meson build && cd build
-ninja
-sudo ninja install
-```
-
-#### GNOME Extensions
-
-<https://extensions.gnome.org>
-
-- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
-- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
-- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
-- [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
-- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
-- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
-- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
-
-#### UI settings
-
-GNOME Tweaks:
-
-- Set UI theme to `Pop`
-- Set icons theme to `Papirus`
-
-Increase cursor size:
-
-```bash
-gsettings set org.gnome.desktop.interface cursor-size 32
-```
-
-
-### Cleanup
-
-Remove unused fonts (`synaptic`'s "Fonts" section) - Ubuntu installs lots of them.
-
-Remove Snap:
-
-```bash
-sudo apt remove snapd
-```
-
 
 ## Software
 
@@ -267,7 +179,7 @@ sudo apt remove -y docker docker-engine docker-compose docker.io containerd runc
 sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 sudo apt update
 
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose
@@ -361,7 +273,7 @@ sudo apt update
 sudo apt install esl-erlang elixir
 ```
 
-### NodeJS+NPM+Yarn
+### NodeJS+NPM
 
 ```bash
 wget https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.xz
@@ -371,34 +283,11 @@ sudo mv node-v12.13.0-linux-x64 /opt/nodejs
 echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs-path.sh
 ```
 
-### [?] R
-
-- <https://www.r-project.org/>
-- <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
-- <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
-
-```bash
-sudo apt install apt-transport-https software-properties-common
-
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
-
-sudo apt install r-base
-```
-
 ### Postman+Newman
-
-<https://www.getpostman.com/>
 
 Postman:
 
-```bash
-wget https://dl.pstmn.io/download/latest/linux64 -O postman.tgz
-tar xvfz postman.tgz
-sudo mv Postman /opt/postman
-
-cp .local/share/applications/postman.desktop ~/.local/share/applications/
-```
+<https://flathub.org/apps/details/com.getpostman.Postman>
 
 Newman:
 
@@ -450,13 +339,6 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
 ```
 
-### [?] Pulumi
-
-<https://www.pulumi.com/docs/get-started/install/>
-
-```bash
-curl -fsSL https://get.pulumi.com | sh
-```
 
 ### JetBrains Rider
 
@@ -485,7 +367,7 @@ Download Input fonts: <https://input.fontbureau.com/download/>
 Download IBM Plex: <https://www.ibm.com/plex/>
 
 ```bash
-wget https://github.com/IBM/plex/releases/download/v3.0.0/OpenType.zip
+wget https://github.com/IBM/plex/releases/download/v4.0.2/OpenType.zip
 ```
 
 Download Fira Code: <https://github.com/tonsky/FiraCode>
@@ -515,17 +397,79 @@ fc-cache -f -r -v
 
 ### Remmina
 
-<https://remmina.org>
-
-```bash
-sudo apt-add-repository ppa:remmina-ppa-team/remmina-next
-sudo apt update
-sudo apt install -y remmina remmina-plugin-rdp remmina-plugin-secret remmina-plugin-spice
-```
+<https://flathub.org/apps/details/org.remmina.Remmina>
 
 ### Slack
 
 Download: <https://slack.com/intl/en-gb/downloads/linux>
+
+
+**NOTE**: For FastMail CalDAV use server URL
+`https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
+
+### Graphics and Photography
+
+#### DisplayCal
+
+Ubuntu has `dispcalgui` package built-in, but it is an older version.
+
+Download latest from <https://displaycal.net/>, install.
+
+
+TBD: either wait for 3.0 binaries, or compile from sources.
+
+```bash
+sudo apt install -y rapid-photo-downloader
+```
+
+- <https://flathub.org/apps/details/com.calibre_ebook.calibre>
+- <https://flathub.org/apps/details/org.libreoffice.LibreOffice>
+- <https://flathub.org/apps/details/org.gimp.GIMP>
+- <https://flathub.org/apps/details/org.audacityteam.Audacity>
+- <https://flathub.org/apps/details/com.obsproject.Studio>
+- <https://github.com/oguzhaninan/Stacer>
+
+
+Joplin
+
+```bash
+wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
+```
+
+EverDo
+<https://everdo.net/>
+
+Typora
+<https://typora.io/>
+
+
+## Optional / Considerations
+
+Following are links for software that is not needed in Elementary or I may consider using in the future.
+
+### [?] R
+
+- <https://www.r-project.org/>
+- <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
+- <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
+
+```bash
+sudo apt install apt-transport-https software-properties-common
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
+
+sudo apt install r-base
+```
+
+### [?] Pulumi
+
+<https://www.pulumi.com/docs/get-started/install/>
+
+```bash
+curl -fsSL https://get.pulumi.com | sh
+```
+
 
 ### [?] MailSpring
 
@@ -541,115 +485,83 @@ sudo dpkg -i minetime.deb
 rm minetime.deb
 ```
 
-**NOTE**: For FastMail CalDAV use server URL
-`https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
+### Papirus Icons
 
-### Electron Apps
-
-#### Prerequisite: `nativefier`
+<https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
 
 ```bash
-sudo -i
-source /etc/profile.d/nodejs-path.sh
-npm install -g nativefier
+sudo add-apt-repository ppa:papirus/papirus
+sudo apt update
+sudo apt install -y papirus-icon-theme gnome-tweaks
 ```
 
-#### Notion
+### Mount Windows Shares
+
+Example of using a Windows file share:
 
 ```bash
-nativefier --name Notion --zoom 1.25 https://www.notion.so
-sudo mv notion-linux-x64 /opt/notion
+sudo apt install -y cifs-utils
+sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
 ```
+
+### UI Tweaks
+
+#### Pop GTK theme
+
+<https://github.com/pop-os/gtk-theme>
 
 ```bash
-sudo cat .local/share/applications/icons/notion.png > /opt/notion/resources/app/icon.png
-cp .local/share/applications/notion.desktop ~/.local/share/applications/
+sudo apt install sassc meson libglib2.0-dev
+
+# Optional:
+sudo apt install inkscape optipng
+
+# Optional:
+sudo apt remove pop-gtk-theme
+sudo rm -rf /usr/share/themes/Pop*
+rm -rf ~/.local/share/themes/Pop*
+rm -rf ~/.themes/Pop*
+
+git clone https://github.com/pop-os/gtk-theme
+cd gtk-theme
+
+meson build && cd build
+ninja
+sudo ninja install
 ```
 
-#### Remember the Milk
+#### GNOME Extensions
+
+<https://extensions.gnome.org>
+
+- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
+- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
+- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
+- [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
+- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
+- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
+- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
+
+#### UI settings
+
+GNOME Tweaks:
+
+- Set UI theme to `Pop`
+- Set icons theme to `Papirus`
+
+Increase cursor size:
 
 ```bash
-nativefier --name remember_the_milk --zoom 1.25 https://www.rememberthemilk.com/app
-sudo mv remember-the-milk-linux-x64 /opt/remember_the_milk
+gsettings set org.gnome.desktop.interface cursor-size 32
 ```
+
+
+### Cleanup
+
+Remove unused fonts (`synaptic`'s "Fonts" section) - Ubuntu installs lots of them.
+
+Remove Snap:
 
 ```bash
-sudo cat .local/share/applications/icons/remember_the_milk.png > /opt/remember_the_milk/resources/app/icon.png
-cp .local/share/applications/remember_the_milk.desktop ~/.local/share/applications/
+sudo apt remove snapd
 ```
-
-#### FastMail
-
-```bash
-nativefier --name fastmail --zoom 1.25 https://www.fastmail.com
-sudo mv fastmail-linux-x64 /opt/fastmail
-```
-
-```bash
-cp .local/share/applications/fastmail.desktop ~/.local/share/applications/
-```
-
-### Graphics and Photography
-
-#### DisplayCal
-
-Ubuntu has `dispcalgui` package built-in, but it is an older version.
-
-Download latest from <https://displaycal.net/>, install.
-
-#### Darktable
-
-Ubuntu has `darktable` package built-in, but it is an older version.
-
-<https://software.opensuse.org/download.html?project=graphics:darktable&package=darktable>
-
-```bash
-sudo sh -c "echo 'deb http://download.opensuse.org/repositories/graphics:/darktable/xUbuntu_18.04/ /' > /etc/apt/sources.list.d/graphics:darktable.list"
-wget -nv https://download.opensuse.org/repositories/graphics:darktable/xUbuntu_18.04/Release.key -O Release.key
-sudo apt-key add - < Release.key
-sudo apt-get update
-sudo apt-get install darktable
-```
-
-To verify that OpenCL is supported:
-
-```bash
-sudo apt install -y clinfo
-clinfo
-```
-
-In Darktable preferences OpenCL support should be enabled.
-
-#### Rapid Photo Downloader, GIMP, Hugin
-
-```bash
-sudo apt install -y rapid-photo-downloader libmediainfo0v5 gimp hugin
-```
-
-### Media
-
-#### Audio editing
-
-```bash
-sudo apt install -y audacity
-```
-
-#### Video player, codecs
-
-```bash
-sudo apt install -y ffmpeg
-sudo apt install -y mpv
-```
-
-#### Open Broadcaster Software
-
-<https://obsproject.com/>
-
-```bash
-sudo apt install -y ffmpeg
-
-sudo add-apt-repository ppa:obsproject/obs-studio
-sudo apt install -y obs-studio
-```
-
-**Note:** Use advanced recording settings and select `FFMPEG VAAPI` encoder.
