@@ -4,12 +4,31 @@ Scripts and configurations for setting up my Linux environment.
 
 ## Operating system installation
 
-Download Ubuntu Desktop from <https://ubuntu.com/download/desktop>.
-Use <https://www.balena.io/etcher/> to make bootable USB drive.
+Download Pop!_OS from <https://system76.com/pop>. Select appropriate version - NVIDIA vs Intel/AMD. 
 
-It is recommended to install latest LTS version. At the moment of writing LTS version is `18.04.3`.
+To make bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://www.balena.io/etcher/>.
+
+At the moment of writing Pop!_OS version is `19.10`.
 
 During installation enable disk encryption.
+
+### UI  Tweaks
+
+```bash
+sudo apt install gnome-tweaks
+```
+
+#### GNOME Extensions
+
+<https://extensions.gnome.org>
+
+- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
+- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
+- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
+- [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
+- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
+- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
+- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
 
 ### Various software packages
 
@@ -27,25 +46,51 @@ sudo apt install \
  p7zip \
  htop \
  synaptic \
- tilix \
  vim \
- firefox \
  -y
  ```
 
-### Video drivers
+### Dependencies from LTS
 
-#### NVIDIA
+Some software packages require `libssl1.0.0` and `libicu60`
 
-In "Software & Updates" settings / "Additional Drivers" select latest NVIDIA
-driver package; apply; reboot.
+```bash
+wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6.2_amd64.deb && \
+  sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6.2_amd64.deb
 
-This will install both graphics and OpenCL drivers.
+wget http://de.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu60_60.2-3ubuntu3_amd64.deb && \
+  sudo dpkg -i libicu60_60.2-3ubuntu3_amd64.deb
+```
 
-At the moment of writing NVIDIA driver package is `nvidia-driver-435`.
+### Flatpak
 
-**NOTE:** When using AMD eGPU to drive external monitor, I found that it is best to use integrated Intel card and not the NVIDIA card.
-In "NVIDIA X Server" application, in "PRIME Profiles" select "Intel (Power Saving Mode)" and re-login.
+```bash
+sudo apt install flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak update
+```
+
+### OpenCL drivers
+
+NVIDIA proprietary driver comes with OpenCL support. Install additional drivers
+if required.
+
+Check OpenCL status
+
+```bash
+sudo apt install clinfo
+clinfo
+```
+
+```plaintext
+Number of platforms                               1
+  Platform Name                                   NVIDIA CUDA
+...
+  Platform Name                                   NVIDIA CUDA
+Number of devices                                 1
+  Device Name                                     GeForce GTX 1060 6GB
+...
+```
 
 #### Intel OpenCL
 
@@ -53,21 +98,7 @@ Install OpenCL drivers for integrated Intel video card.
 
 <https://github.com/intel/compute-runtime>
 
-```bash
-mkdir neo
-
-cd neo
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-gmmlib_19.3.4_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-igc-core_1.0.2878_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-igc-opencl_1.0.2878_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-opencl_19.46.14807_amd64.deb
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/intel-ocloc_19.46.14807_amd64.deb
-
-wget https://github.com/intel/compute-runtime/releases/download/19.46.14807/ww46.sum
-sha256sum -c ww46.sum
-
-sudo dpkg -i *.deb
-```
+Follow instructions in the latest release.
 
 #### AMD OpenCL
 
@@ -82,7 +113,7 @@ Uncompress the package.
 From the drivers directory, run
 
 ```bash
-./amdgpu-install -y --opencl=pal,legacy --headless
+./amdgpu-install --opencl=pal,legacy --headless --no-dkms
 ```
 
 ### SSH Key
@@ -104,101 +135,14 @@ sudo apt install -y zsh git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 ```
 
-### Papirus Icons
-
-<https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
-
-```bash
-sudo add-apt-repository ppa:papirus/papirus
-sudo apt update
-sudo apt install -y papirus-icon-theme gnome-tweaks
-```
-
-### Mount Windows Shares
-
-Example of using a Windows file share:
-
-```bash
-sudo apt install -y cifs-utils
-sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
-```
-
-### UI Tweaks
-
-
-#### Pop GTK theme
-
-<https://github.com/pop-os/gtk-theme>
-
-```bash
-sudo apt install sassc meson libglib2.0-dev
-
-# Optional:
-sudo apt install inkscape optipng
-
-# Optional:
-sudo apt remove pop-gtk-theme
-sudo rm -rf /usr/share/themes/Pop*
-rm -rf ~/.local/share/themes/Pop*
-rm -rf ~/.themes/Pop*
-
-git clone https://github.com/pop-os/gtk-theme
-cd gtk-theme
-
-meson build && cd build
-ninja
-sudo ninja install
-```
-
-#### GNOME Extensions
-
-<https://extensions.gnome.org>
-
-- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
-- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
-- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
-- [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
-- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
-- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
-- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
-
-#### UI settings
-
-GNOME Tweaks:
-
-- Set UI theme to `Pop`
-- Set icons theme to `Papirus`
-
-Increase cursor size:
-
-```bash
-gsettings set org.gnome.desktop.interface cursor-size 32
-```
-
-
-### Cleanup
-
-Remove unused fonts (`synaptic`'s "Fonts" section) - Ubuntu installs lots of them.
-
-Remove Snap:
-
-```bash
-sudo apt remove snapd
-```
-
-
 ## Software
 
 ### Bitwarden
 
-<https://bitwarden.com/>
+<https://flathub.org/apps/details/com.bitwarden.desktop>
 
 ```bash
-cd ~/Downloads
-wget https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb
-mv 'index.html?app=desktop&platform=linux&variant=deb' bitwarden.deb
-sudo apt install ./bitwarden.deb
-rm bitwarden.deb
+flatpak install com.bitwarden.desktop
 ```
 
 ### Firefox
@@ -267,7 +211,7 @@ sudo apt remove -y docker docker-engine docker-compose docker.io containerd runc
 sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 sudo apt update
 
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose
@@ -293,6 +237,7 @@ wget https://dot.net/v1/dotnet-install.sh
 chmod +x ./dotnet-install.sh
 
 sudo ./dotnet-install.sh --version 2.2.402 --install-dir /opt/dotnet
+sudo ./dotnet-install.sh --version 2.2.207 --install-dir /opt/dotnet
 sudo ./dotnet-install.sh --version 3.0.100 --install-dir /opt/dotnet
 
 echo 'export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"\nexport DOTNET_ROOT=/opt/dotnet' | sudo tee /etc/profile.d/dotnet-path.sh
@@ -317,6 +262,9 @@ rm packages-microsoft-prod.deb
 sudo apt update
 sudo apt install -y powershell
 ```
+
+Alternatively, grab packages from [PowerShell Core 6.2.3](https://github.com/PowerShell/PowerShell/releases/tag/v6.2.3) release.
+
 
 ### Rust
 
@@ -348,20 +296,7 @@ sudo apt update
 sudo apt install sbt
 ```
 
-### Erlang+Elixir
-
-<https://elixir-lang.org/install.html>
-
-```bash
-wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
-sudo dpkg -i erlang-solutions_2.0_all.deb
-rm erlang-solutions_2.0_all.deb
-
-sudo apt update
-sudo apt install esl-erlang elixir
-```
-
-### NodeJS+NPM+Yarn
+### NodeJS+NPM
 
 ```bash
 wget https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.xz
@@ -371,33 +306,14 @@ sudo mv node-v12.13.0-linux-x64 /opt/nodejs
 echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs-path.sh
 ```
 
-### [?] R
-
-- <https://www.r-project.org/>
-- <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
-- <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
-
-```bash
-sudo apt install apt-transport-https software-properties-common
-
-sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
-
-sudo apt install r-base
-```
-
 ### Postman+Newman
-
-<https://www.getpostman.com/>
 
 Postman:
 
-```bash
-wget https://dl.pstmn.io/download/latest/linux64 -O postman.tgz
-tar xvfz postman.tgz
-sudo mv Postman /opt/postman
+<https://flathub.org/apps/details/com.getpostman.Postman>
 
-cp .local/share/applications/postman.desktop ~/.local/share/applications/
+```bash
+flatpak install com.getpostman.Postman
 ```
 
 Newman:
@@ -413,13 +329,31 @@ npm install -g newman
 <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest>
 
 ```bash
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+sudo apt update
+sudo apt install ca-certificates curl apt-transport-https lsb-release gnupg
+
+curl -sL https://packages.microsoft.com/keys/microsoft.asc | 
+    gpg --dearmor | 
+    sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+
+AZ_REPO=bionic
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | 
+    sudo tee /etc/apt/sources.list.d/azure-cli.list
+
+sudo apt update
+sudo apt install azure-cli
 ```
 
 Initialize:
 
 ```bash
 az login
+```
+
+Add Devops extension:
+
+```bash
+az extension add --name azure-devops
 ```
 
 ### Google Cloud Platform SDK
@@ -450,14 +384,6 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
 ```
 
-### [?] Pulumi
-
-<https://www.pulumi.com/docs/get-started/install/>
-
-```bash
-curl -fsSL https://get.pulumi.com | sh
-```
-
 ### JetBrains Rider
 
 - download from <https://www.jetbrains.com/rider/download>
@@ -485,7 +411,7 @@ Download Input fonts: <https://input.fontbureau.com/download/>
 Download IBM Plex: <https://www.ibm.com/plex/>
 
 ```bash
-wget https://github.com/IBM/plex/releases/download/v3.0.0/OpenType.zip
+wget https://github.com/IBM/plex/releases/download/v4.0.2/OpenType.zip
 ```
 
 Download Fira Code: <https://github.com/tonsky/FiraCode>
@@ -515,79 +441,15 @@ fc-cache -f -r -v
 
 ### Remmina
 
-<https://remmina.org>
+<https://flathub.org/apps/details/org.remmina.Remmina>
 
 ```bash
-sudo apt-add-repository ppa:remmina-ppa-team/remmina-next
-sudo apt update
-sudo apt install -y remmina remmina-plugin-rdp remmina-plugin-secret remmina-plugin-spice
+flatpak install org.remmina.Remmina
 ```
 
 ### Slack
 
 Download: <https://slack.com/intl/en-gb/downloads/linux>
-
-### [?] MailSpring
-
-Download: <https://updates.getmailspring.com/download?platform=linuxDeb>
-
-### [?] MineTime
-
-MineTime calendar: <https://minetime.ai/>
-
-```bash
-wget https://minetime-deploy.herokuapp.com/download/linux_deb_64 -O minetime.deb
-sudo dpkg -i minetime.deb
-rm minetime.deb
-```
-
-**NOTE**: For FastMail CalDAV use server URL
-`https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
-
-### Electron Apps
-
-#### Prerequisite: `nativefier`
-
-```bash
-sudo -i
-source /etc/profile.d/nodejs-path.sh
-npm install -g nativefier
-```
-
-#### Notion
-
-```bash
-nativefier --name Notion --zoom 1.25 https://www.notion.so
-sudo mv notion-linux-x64 /opt/notion
-```
-
-```bash
-sudo cat .local/share/applications/icons/notion.png > /opt/notion/resources/app/icon.png
-cp .local/share/applications/notion.desktop ~/.local/share/applications/
-```
-
-#### Remember the Milk
-
-```bash
-nativefier --name remember_the_milk --zoom 1.25 https://www.rememberthemilk.com/app
-sudo mv remember-the-milk-linux-x64 /opt/remember_the_milk
-```
-
-```bash
-sudo cat .local/share/applications/icons/remember_the_milk.png > /opt/remember_the_milk/resources/app/icon.png
-cp .local/share/applications/remember_the_milk.desktop ~/.local/share/applications/
-```
-
-#### FastMail
-
-```bash
-nativefier --name fastmail --zoom 1.25 https://www.fastmail.com
-sudo mv fastmail-linux-x64 /opt/fastmail
-```
-
-```bash
-cp .local/share/applications/fastmail.desktop ~/.local/share/applications/
-```
 
 ### Graphics and Photography
 
@@ -597,59 +459,152 @@ Ubuntu has `dispcalgui` package built-in, but it is an older version.
 
 Download latest from <https://displaycal.net/>, install.
 
-#### Darktable
-
-Ubuntu has `darktable` package built-in, but it is an older version.
-
-<https://software.opensuse.org/download.html?project=graphics:darktable&package=darktable>
+#### RawTherapee
 
 ```bash
-sudo sh -c "echo 'deb http://download.opensuse.org/repositories/graphics:/darktable/xUbuntu_18.04/ /' > /etc/apt/sources.list.d/graphics:darktable.list"
-wget -nv https://download.opensuse.org/repositories/graphics:darktable/xUbuntu_18.04/Release.key -O Release.key
-sudo apt-key add - < Release.key
-sudo apt-get update
-sudo apt-get install darktable
+flatpak install com.rawtherapee.RawTherapee
 ```
 
-To verify that OpenCL is supported:
+#### GIMP
 
 ```bash
-sudo apt install -y clinfo
-clinfo
+flatpak install org.gimp.GIMP
 ```
 
-In Darktable preferences OpenCL support should be enabled.
-
-#### Rapid Photo Downloader, GIMP, Hugin
+#### Rapid Photo Downloader
 
 ```bash
-sudo apt install -y rapid-photo-downloader libmediainfo0v5 gimp hugin
+sudo apt install -y rapid-photo-downloader
 ```
 
-### Media
-
-#### Audio editing
+### Joplin
 
 ```bash
-sudo apt install -y audacity
+wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
 ```
 
-#### Video player, codecs
+### EverDo
+<https://everdo.net/>
+
+### OBS Studio
 
 ```bash
-sudo apt install -y ffmpeg
-sudo apt install -y mpv
+flatpak install com.obsproject.Studio
 ```
 
-#### Open Broadcaster Software
-
-<https://obsproject.com/>
+### Audacity
 
 ```bash
-sudo apt install -y ffmpeg
-
-sudo add-apt-repository ppa:obsproject/obs-studio
-sudo apt install -y obs-studio
+flatpak install org.audacityteam.Audacity
 ```
 
-**Note:** Use advanced recording settings and select `FFMPEG VAAPI` encoder.
+### Kdenlive
+
+```bash
+flatpak install kdenlive
+```
+
+### Calible
+
+```bash
+flatpak install calible
+```
+
+### Calible
+
+```bash
+flatpak install calible
+```
+
+### MarkText
+
+```bash
+flatpak install marktext
+```
+
+### Green With Envy
+
+```bash
+flatpak install com.leinardi.gwe
+```
+
+### Stacer
+
+<https://github.com/oguzhaninan/Stacer>
+
+### Typora
+
+<https://typora.io/>
+
+## Optional / Considerations
+
+Following are links for software that is not needed in Pop_!_OS or I may consider using in the future.
+
+### Erlang+Elixir
+
+<https://elixir-lang.org/install.html>
+
+```bash
+wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+sudo dpkg -i erlang-solutions_2.0_all.deb
+rm erlang-solutions_2.0_all.deb
+
+sudo apt update
+sudo apt install esl-erlang elixir
+```
+
+### R
+
+- <https://www.r-project.org/>
+- <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
+- <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
+
+```bash
+sudo apt install apt-transport-https software-properties-common
+
+sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
+
+sudo apt install r-base
+```
+
+### Pulumi
+
+<https://www.pulumi.com/docs/get-started/install/>
+
+```bash
+curl -fsSL https://get.pulumi.com | sh
+```
+
+### MailSpring
+
+Download: <https://updates.getmailspring.com/download?platform=linuxDeb>
+
+### MineTime
+
+MineTime calendar: <https://minetime.ai/>
+
+```bash
+wget https://minetime-deploy.herokuapp.com/download/linux_deb_64 -O minetime.deb
+sudo dpkg -i minetime.deb
+rm minetime.deb
+```
+
+### Papirus Icons
+
+<https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
+
+```bash
+sudo add-apt-repository ppa:papirus/papirus
+sudo apt update
+sudo apt install -y papirus-icon-theme gnome-tweaks
+```
+
+### Mount Windows Shares
+
+Example of using a Windows file share:
+
+```bash
+sudo apt install -y cifs-utils
+sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
+```
