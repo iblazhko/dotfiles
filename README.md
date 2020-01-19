@@ -175,7 +175,7 @@ cp .config/Code/User/settings.json ~/.config/Code/User/
 #### PlantUML Prerequisites
 
 ```bash
-sudo apt install graphviz openjdk-11-jre-headless
+sudo apt install graphviz openjdk-13-jre-headless
 ```
 
 ### Sublime Text, Sublime Merge
