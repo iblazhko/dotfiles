@@ -4,12 +4,31 @@ Scripts and configurations for setting up my Linux environment.
 
 ## Operating system installation
 
-Download Elementary OS from <https://elementary.io>.
-To make bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://unetbootin.github.io/>.
+Download Pop!_OS from <https://system76.com/pop>. Select appropriate version - NVIDIA vs Intel/AMD. 
 
-At the moment of writing ElementaryOS version is `5.1 Hera`.
+To make bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://www.balena.io/etcher/>.
+
+At the moment of writing Pop!_OS version is `19.10`.
 
 During installation enable disk encryption.
+
+### UI  Tweaks
+
+```bash
+sudo apt install gnome-tweaks
+```
+
+#### GNOME Extensions
+
+<https://extensions.gnome.org>
+
+- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
+- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
+- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
+- [Dash to Dock](https://extensions.gnome.org/extension/307/dash-to-dock/)
+- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
+- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
+- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
 
 ### Various software packages
 
@@ -28,20 +47,50 @@ sudo apt install \
  htop \
  synaptic \
  vim \
- firefox \
  -y
  ```
 
-### Video drivers
+### Dependencies from LTS
 
-#### NVIDIA
+Some software packages require `libssl1.0.0` and `libicu60`
 
-In "Software & Updates" settings / "Additional Drivers" select latest NVIDIA
-driver package; apply; reboot.
+```bash
+wget http://security.ubuntu.com/ubuntu/pool/main/o/openssl1.0/libssl1.0.0_1.0.2n-1ubuntu6.2_amd64.deb && \
+  sudo dpkg -i libssl1.0.0_1.0.2n-1ubuntu6.2_amd64.deb
 
-This will install both graphics and OpenCL drivers.
+wget http://de.archive.ubuntu.com/ubuntu/pool/main/i/icu/libicu60_60.2-3ubuntu3_amd64.deb && \
+  sudo dpkg -i libicu60_60.2-3ubuntu3_amd64.deb
+```
 
-At the moment of writing NVIDIA driver package is `nvidia-driver-435`.
+### Flatpak
+
+```bash
+sudo apt install flatpak
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+flatpak update
+```
+
+### OpenCL drivers
+
+NVIDIA proprietary driver comes with OpenCL support. Install additional drivers
+if required.
+
+Check OpenCL status
+
+```bash
+sudo apt install clinfo
+clinfo
+```
+
+```plaintext
+Number of platforms                               1
+  Platform Name                                   NVIDIA CUDA
+...
+  Platform Name                                   NVIDIA CUDA
+Number of devices                                 1
+  Device Name                                     GeForce GTX 1060 6GB
+...
+```
 
 #### Intel OpenCL
 
@@ -61,23 +110,10 @@ Download link for AMD RX 580: <https://www.amd.com/en/support/graphics/radeon-50
 
 Uncompress the package.
 
-In the `amdgpu-install` script add `elementary` to the list of supported distributions (around L134)
-
-```bash
-function os_release() {
-  if [[ -r  /etc/os-release ]]; then
-    . /etc/os-release
-
-  case "$ID" in
-    ubuntu|linuxmint|debian|elementary)
-      :
-      ;;
-```
-
 From the drivers directory, run
 
 ```bash
-./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
+./amdgpu-install --opencl=pal,legacy --headless --no-dkms
 ```
 
 ### SSH Key
@@ -104,6 +140,10 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 ### Bitwarden
 
 <https://flathub.org/apps/details/com.bitwarden.desktop>
+
+```bash
+flatpak install com.bitwarden.desktop
+```
 
 ### Firefox
 
@@ -223,6 +263,9 @@ sudo apt update
 sudo apt install -y powershell
 ```
 
+Alternatively, grab packages from [PowerShell Core 6.2.3](https://github.com/PowerShell/PowerShell/releases/tag/v6.2.3) release.
+
+
 ### Rust
 
 - <https://www.rust-lang.org>
@@ -268,6 +311,10 @@ echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs-path
 Postman:
 
 <https://flathub.org/apps/details/com.getpostman.Postman>
+
+```bash
+flatpak install com.getpostman.Postman
+```
 
 Newman:
 
@@ -396,12 +443,13 @@ fc-cache -f -r -v
 
 <https://flathub.org/apps/details/org.remmina.Remmina>
 
+```bash
+flatpak install org.remmina.Remmina
+```
+
 ### Slack
 
 Download: <https://slack.com/intl/en-gb/downloads/linux>
-
-**NOTE**: For FastMail CalDAV use server URL
-`https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
 
 ### Graphics and Photography
 
@@ -411,18 +459,23 @@ Ubuntu has `dispcalgui` package built-in, but it is an older version.
 
 Download latest from <https://displaycal.net/>, install.
 
-TBD: either wait for 3.0 binaries, or compile from sources.
+#### RawTherapee
+
+```bash
+flatpak install com.rawtherapee.RawTherapee
+```
+
+#### GIMP
+
+```bash
+flatpak install org.gimp.GIMP
+```
+
+#### Rapid Photo Downloader
 
 ```bash
 sudo apt install -y rapid-photo-downloader
 ```
-
-- <https://flathub.org/apps/details/com.calibre_ebook.calibre>
-- <https://flathub.org/apps/details/org.libreoffice.LibreOffice>
-- <https://flathub.org/apps/details/org.gimp.GIMP>
-- <https://flathub.org/apps/details/org.audacityteam.Audacity>
-- <https://flathub.org/apps/details/com.obsproject.Studio>
-- <https://github.com/oguzhaninan/Stacer>
 
 ### Joplin
 
@@ -430,15 +483,62 @@ sudo apt install -y rapid-photo-downloader
 wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
 ```
 
-EverDo
+### EverDo
 <https://everdo.net/>
 
-Typora
+### OBS Studio
+
+```bash
+flatpak install com.obsproject.Studio
+```
+
+### Audacity
+
+```bash
+flatpak install org.audacityteam.Audacity
+```
+
+### Kdenlive
+
+```bash
+flatpak install kdenlive
+```
+
+### Calible
+
+```bash
+flatpak install calible
+```
+
+### Calible
+
+```bash
+flatpak install calible
+```
+
+### MarkText
+
+```bash
+flatpak install marktext
+```
+
+### Green With Envy
+
+```bash
+flatpak install com.leinardi.gwe
+```
+
+### Stacer
+
+<https://github.com/oguzhaninan/Stacer>
+
+### Typora
+
 <https://typora.io/>
 
 ## Optional / Considerations
 
-Following are links for software that is not needed in Elementary or I may consider using in the future.
+Following are links for software that is not needed in Pop_!_OS or I may consider using in the future.
 
 ### Erlang+Elixir
 
@@ -507,66 +607,4 @@ Example of using a Windows file share:
 ```bash
 sudo apt install -y cifs-utils
 sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
-```
-
-### UI Tweaks
-
-#### Pop GTK theme
-
-<https://github.com/pop-os/gtk-theme>
-
-```bash
-sudo apt install sassc meson libglib2.0-dev
-
-# Optional:
-sudo apt install inkscape optipng
-
-# Optional:
-sudo apt remove pop-gtk-theme
-sudo rm -rf /usr/share/themes/Pop*
-rm -rf ~/.local/share/themes/Pop*
-rm -rf ~/.themes/Pop*
-
-git clone https://github.com/pop-os/gtk-theme
-cd gtk-theme
-
-meson build && cd build
-ninja
-sudo ninja install
-```
-
-#### GNOME Extensions
-
-<https://extensions.gnome.org>
-
-- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
-- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
-- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
-- [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
-- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
-- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
-- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
-
-#### UI settings
-
-GNOME Tweaks:
-
-- Set UI theme to `Pop`
-- Set icons theme to `Papirus`
-
-Increase cursor size:
-
-```bash
-gsettings set org.gnome.desktop.interface cursor-size 32
-```
-
-
-### Cleanup
-
-Remove unused fonts (`synaptic`'s "Fonts" section) - Ubuntu installs lots of them.
-
-Remove Snap:
-
-```bash
-sudo apt remove snapd
 ```
