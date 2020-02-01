@@ -5,7 +5,7 @@ Scripts and configurations for setting up my Linux environment.
 ## Operating system installation
 
 Download Elementary OS from <https://elementary.io>.
-To make bootable USB drive use <https://rufus.ie/> on Windows or <https://www.balena.io/etcher/> on macOS / Linux.
+To make bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://www.balena.io/etcher/> on macOS / Linux.
 
 At the moment of writing ElementaryOS version is `5.1 Hera`.
 
@@ -65,13 +65,13 @@ In the `amdgpu-install` script add `elementary` to the list of supported distrib
 
 ```bash
 function os_release() {
-	if [[ -r  /etc/os-release ]]; then
-		. /etc/os-release
+  if [[ -r  /etc/os-release ]]; then
+    . /etc/os-release
 
-		case "$ID" in
-		ubuntu|linuxmint|debian|elementary)
-			:
-			;;
+  case "$ID" in
+    ubuntu|linuxmint|debian|elementary)
+      :
+      ;;
 ```
 
 From the drivers directory, run
@@ -103,15 +103,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 
 ### Bitwarden
 
-<https://bitwarden.com/>
-
-```bash
-cd ~/Downloads
-wget https://vault.bitwarden.com/download/?app=desktop&platform=linux&variant=deb
-mv 'index.html?app=desktop&platform=linux&variant=deb' bitwarden.deb
-sudo apt install ./bitwarden.deb
-rm bitwarden.deb
-```
+<https://flathub.org/apps/details/com.bitwarden.desktop>
 
 ### Firefox
 
@@ -204,8 +196,8 @@ sudo apt install -y apt-transport-https
 wget https://dot.net/v1/dotnet-install.sh
 chmod +x ./dotnet-install.sh
 
-sudo ./dotnet-install.sh --version 2.2.402 --install-dir /opt/dotnet
-sudo ./dotnet-install.sh --version 3.0.100 --install-dir /opt/dotnet
+sudo ./dotnet-install.sh --version 2.2.207 --install-dir /opt/dotnet
+sudo ./dotnet-install.sh --version 3.1.101 --install-dir /opt/dotnet
 
 echo 'export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"\nexport DOTNET_ROOT=/opt/dotnet' | sudo tee /etc/profile.d/dotnet-path.sh
 source /etc/profile.d/dotnet-path.sh
@@ -260,19 +252,6 @@ sudo apt update
 sudo apt install sbt
 ```
 
-### Erlang+Elixir
-
-<https://elixir-lang.org/install.html>
-
-```bash
-wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
-sudo dpkg -i erlang-solutions_2.0_all.deb
-rm erlang-solutions_2.0_all.deb
-
-sudo apt update
-sudo apt install esl-erlang elixir
-```
-
 ### NodeJS+NPM
 
 ```bash
@@ -302,13 +281,31 @@ npm install -g newman
 <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest>
 
 ```bash
-curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+sudo apt update
+sudo apt install ca-certificates curl apt-transport-https lsb-release gnupg
+
+curl -sL https://packages.microsoft.com/keys/microsoft.asc | 
+    gpg --dearmor | 
+    sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
+
+AZ_REPO=bionic
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | 
+    sudo tee /etc/apt/sources.list.d/azure-cli.list
+
+sudo apt update
+sudo apt install azure-cli
 ```
 
 Initialize:
 
 ```bash
 az login
+```
+
+Add Devops extension:
+
+```bash
+az extension add --name azure-devops
 ```
 
 ### Google Cloud Platform SDK
@@ -338,7 +335,6 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 ```bash
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
 ```
-
 
 ### JetBrains Rider
 
@@ -403,7 +399,6 @@ fc-cache -f -r -v
 
 Download: <https://slack.com/intl/en-gb/downloads/linux>
 
-
 **NOTE**: For FastMail CalDAV use server URL
 `https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
 
@@ -414,7 +409,6 @@ Download: <https://slack.com/intl/en-gb/downloads/linux>
 Ubuntu has `dispcalgui` package built-in, but it is an older version.
 
 Download latest from <https://displaycal.net/>, install.
-
 
 TBD: either wait for 3.0 binaries, or compile from sources.
 
@@ -429,8 +423,7 @@ sudo apt install -y rapid-photo-downloader
 - <https://flathub.org/apps/details/com.obsproject.Studio>
 - <https://github.com/oguzhaninan/Stacer>
 
-
-Joplin
+### Joplin
 
 ```bash
 wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
@@ -442,12 +435,24 @@ EverDo
 Typora
 <https://typora.io/>
 
-
 ## Optional / Considerations
 
 Following are links for software that is not needed in Elementary or I may consider using in the future.
 
-### [?] R
+### Erlang+Elixir
+
+<https://elixir-lang.org/install.html>
+
+```bash
+wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
+sudo dpkg -i erlang-solutions_2.0_all.deb
+rm erlang-solutions_2.0_all.deb
+
+sudo apt update
+sudo apt install esl-erlang elixir
+```
+
+### R
 
 - <https://www.r-project.org/>
 - <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
@@ -462,7 +467,7 @@ sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic
 sudo apt install r-base
 ```
 
-### [?] Pulumi
+### Pulumi
 
 <https://www.pulumi.com/docs/get-started/install/>
 
@@ -470,12 +475,11 @@ sudo apt install r-base
 curl -fsSL https://get.pulumi.com | sh
 ```
 
-
-### [?] MailSpring
+### MailSpring
 
 Download: <https://updates.getmailspring.com/download?platform=linuxDeb>
 
-### [?] MineTime
+### MineTime
 
 MineTime calendar: <https://minetime.ai/>
 
