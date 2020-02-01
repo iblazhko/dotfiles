@@ -1,0 +1,32 @@
+{
+    "color_scheme": "Packages/Color Scheme - Default/Mariana.sublime-color-scheme",
+    "folder_exclude_patterns":
+    [
+        ".svn",
+        ".git",
+        ".hg",
+        "CVS",
+        "bin",
+        "obj",
+        ".vs",
+        ".idea"
+    ],
+    "font_face": "PragmataPro Mono Liga",
+    "font_size": 12,
+    "highlight_line": true,
+    "ignored_packages":
+    [
+        "Vintage"
+    ],
+    "line_padding_bottom": 4,
+    "line_padding_top": 4,
+    "rulers":
+    [
+        80,
+        100,
+        120,
+        150
+    ],
+    "theme": "Adaptive.sublime-theme",
+    "ui_scale": 1.25,
+}
