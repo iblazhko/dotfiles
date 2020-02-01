@@ -11,73 +11,15 @@ At the moment of writing ElementaryOS version is `5.1 Hera`.
 
 During installation enable disk encryption.
 
-### Various software packages
+### Oh My ZSH
+
+<https://ohmyz.sh/>
 
 ```bash
-sudo apt update
-sudo apt upgrade
+sudo apt install -y zsh git
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-sudo apt install \
- build-essential \
- curl \
- wget \
- httpie \
- file \
- git \
- p7zip \
- htop \
- synaptic \
- vim \
- firefox \
- -y
- ```
-
-### Video drivers
-
-#### NVIDIA
-
-In "Software & Updates" settings / "Additional Drivers" select latest NVIDIA
-driver package; apply; reboot.
-
-This will install both graphics and OpenCL drivers.
-
-At the moment of writing NVIDIA driver package is `nvidia-driver-435`.
-
-#### Intel OpenCL
-
-Install OpenCL drivers for integrated Intel video card.
-
-<https://github.com/intel/compute-runtime>
-
-Follow instructions in the latest release.
-
-#### AMD OpenCL
-
-Install OpenCL drivers for external AMD video card.
-
-Download drivers package from <https://www.amd.com/en/support/>.
-
-Download link for AMD RX 580: <https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-580>
-
-Uncompress the package.
-
-In the `amdgpu-install` script add `elementary` to the list of supported distributions (around L134)
-
-```bash
-function os_release() {
-  if [[ -r  /etc/os-release ]]; then
-    . /etc/os-release
-
-  case "$ID" in
-    ubuntu|linuxmint|debian|elementary)
-      :
-      ;;
-```
-
-From the drivers directory, run
-
-```bash
-./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
+cat ./.zshrc > ~/.zshrc
 ```
 
 ### SSH Key
@@ -90,20 +32,83 @@ echo "Public key:"
 cat ~/.ssh/some_name.pub
 ```
 
-### Oh My ZSH
+### Elementary Tweaks
 
-<https://ohmyz.sh/>
+<https://github.com/elementary-tweaks/elementary-tweaks>
 
 ```bash
-sudo apt install -y zsh git
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
+sudo add-apt-repository ppa:philip.scott/elementary-tweaks
+sudo apt install elementary-tweaks
 ```
 
 ## Software
 
-### Bitwarden
+### APT Software
 
-<https://flathub.org/apps/details/com.bitwarden.desktop>
+```bash
+sudo apt update
+sudo apt upgrade
+
+sudo apt install \
+ build-essential \
+ clinfo \
+ curl \
+ file \
+ git \
+ htop \
+ httpie \
+ p7zip \
+ vim \
+ wget \
+ rapid-photo-downloader \
+ tlp \
+ powertop \
+ -y
+ ```
+
+### ElementaryOS AppCenter Software
+
+- AppEditor
+- Chromium Browser
+- Contacts
+- DConf editor
+- Eddy
+- Firefox Browser
+- Fondo
+- Formatter
+- Image Burner
+- Monitor
+- Palaura (dictionary)
+- Screen Recorder
+
+### Flatpak Software
+
+- <https://flathub.org/apps/details/com.bitwarden.desktop>
+- <https://flathub.org/apps/details/com.calibre_ebook.calibre>
+- <https://flathub.org/apps/details/com.getpostman.Postman>
+- <https://flathub.org/apps/details/com.github.marktext.marktext>
+- <https://flathub.org/apps/details/com.leinardi.gwe>
+- <https://flathub.org/apps/details/com.obsproject.Studio>
+- <https://flathub.org/apps/details/com.rawtherapee.RawTherapee>
+- <https://flathub.org/apps/details/org.audacityteam.Audacity>
+- <https://flathub.org/apps/details/org.gimp.GIMP>
+- <https://flathub.org/apps/details/org.kde.kdenlive>
+- <https://flathub.org/apps/details/org.libreoffice.LibreOffice>
+- <https://flathub.org/apps/details/org.remmina.Remmina>
+- <https://flathub.org/apps/details/uk.co.ibboard.cawbird>
+
+- <https://flathub.org/apps/details/org.darktable.Darktable> **TODO:** Wait until 3.0 binaries are available.
+
+### DEBs Software
+
+- VisualStudio Code: <https://code.visualstudio.com/>
+- Beyond Compare: <https://scootersoftware.com>
+- DisplayCal: <https://displaycal.net/>
+- Everdo Desktop: <https://everdo.us15.list-manage.com/track/click?u=b1bbf304b9fe6c4945443597b&id=01cdfac3d3&e=6c3ec5f512>
+- Slack: <https://slack.com/intl/en-gb/downloads/linux>
+- Zoom: <https://zoom.us/download?os=linux>
+- Viber: <https://www.viber.com/download/>
+- Skype: <https://www.skype.com/en/get-skype/>
 
 ### Firefox
 
@@ -123,9 +128,6 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/mas
 - At <https://github.com/settings/keys>, upload the SSH key created above
 
 ### VisualStudio Code
-
-- <https://code.visualstudio.com/>
-- Download `.deb`, install
 
 ```bash
 mkdir -p ~/.config/Code/User
@@ -154,11 +156,6 @@ sudo apt install -y sublime-text sublime-merge
 mkdir -p ~/.config/sublime-text-3/Packages/User
 cp .config/sublime-text-3/Packages/User/Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User
 ```
-
-### BeyondCompare
-
-- <https://scootersoftware.com>
-- Download `.deb`, install
 
 ### Docker
 
@@ -262,13 +259,7 @@ sudo mv node-v12.13.0-linux-x64 /opt/nodejs
 echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs-path.sh
 ```
 
-### Postman+Newman
-
-Postman:
-
-<https://flathub.org/apps/details/com.getpostman.Postman>
-
-Newman:
+### Newman
 
 ```bash
 sudo -i
@@ -336,25 +327,12 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
 ```
 
-### JetBrains Rider
+### JetBrains IDEs
 
-- download from <https://www.jetbrains.com/rider/download>
-- unpack and move to `/opt/jetbrains_rider`
-
-### JetBrains PyCharm
-
-- download from <https://www.jetbrains.com/pycharm/download/>
-- unpack and move to `/opt/jetbrains_pycharm`
-
-### JetBrains IDEA
-
-- download from <https://www.jetbrains.com/idea/download>
-- unpack and move to `/opt/jetbrains_idea`
-
-### JetBrains DataGrip
-
-- download from <https://www.jetbrains.com/datagrip/download>
-- unpack and move to `/opt/jetbrains_datagrip`
+- Rider: <https://www.jetbrains.com/rider/download> -> `/opt/jetbrains_rider`
+- PyCharm: <https://www.jetbrains.com/pycharm/download/> -> `/opt/jetbrains_pycharm`
+- IDEA: <https://www.jetbrains.com/idea/download> -> `/opt/jetbrains_idea`
+- DataGrip: <https://www.jetbrains.com/datagrip/download> -> `/opt/jetbrains_datagrip`
 
 ### Fonts
 
@@ -376,6 +354,8 @@ wget https://github.com/adobe-fonts/source-serif-pro/releases/download/3.000R/so
 wget https://github.com/adobe-fonts/source-sans-pro/releases/download/3.006R/source-sans-pro-3.006R.zip
 ```
 
+Download PragmataPro fonts (link in the email).
+
 ... extract all of the above
 
 ```bash
@@ -387,41 +367,10 @@ mv FiraCode_2/otf ~/.local/share/fonts/FiraCode
 mv source-code-pro-2.030R-ro-1.050R-it/OTF ~/.local/share/fonts/SourceCode
 mv source-sans-pro-3.006R/OTF ~/.local/share/fonts/SourceSans
 mv source-serif-pro-3.000R/OTF ~/.local/share/fonts/SourceSerif
+mv PragmataPro ~/.local/share/fonts/PragmataPro
 
 fc-cache -f -r -v
 ```
-
-### Remmina
-
-<https://flathub.org/apps/details/org.remmina.Remmina>
-
-### Slack
-
-Download: <https://slack.com/intl/en-gb/downloads/linux>
-
-**NOTE**: For FastMail CalDAV use server URL
-`https://caldav.fastmail.com/dav/calendars/user/<username@fastmail.in>/`.
-
-### Graphics and Photography
-
-#### DisplayCal
-
-Ubuntu has `dispcalgui` package built-in, but it is an older version.
-
-Download latest from <https://displaycal.net/>, install.
-
-TBD: either wait for 3.0 binaries, or compile from sources.
-
-```bash
-sudo apt install -y rapid-photo-downloader
-```
-
-- <https://flathub.org/apps/details/com.calibre_ebook.calibre>
-- <https://flathub.org/apps/details/org.libreoffice.LibreOffice>
-- <https://flathub.org/apps/details/org.gimp.GIMP>
-- <https://flathub.org/apps/details/org.audacityteam.Audacity>
-- <https://flathub.org/apps/details/com.obsproject.Studio>
-- <https://github.com/oguzhaninan/Stacer>
 
 ### Joplin
 
@@ -429,11 +378,21 @@ sudo apt install -y rapid-photo-downloader
 wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
 ```
 
-EverDo
-<https://everdo.net/>
-
-Typora
+### Typora
 <https://typora.io/>
+
+```bash
+# or run:
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
+wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+
+# add Typora's repository
+sudo add-apt-repository 'deb https://typora.io/linux ./'
+sudo apt-get update
+
+# install typora
+sudo apt-get install typora
+```
 
 ## Optional / Considerations
 
@@ -475,29 +434,6 @@ sudo apt install r-base
 curl -fsSL https://get.pulumi.com | sh
 ```
 
-### MailSpring
-
-Download: <https://updates.getmailspring.com/download?platform=linuxDeb>
-
-### MineTime
-
-MineTime calendar: <https://minetime.ai/>
-
-```bash
-wget https://minetime-deploy.herokuapp.com/download/linux_deb_64 -O minetime.deb
-sudo dpkg -i minetime.deb
-rm minetime.deb
-```
-
-### Papirus Icons
-
-<https://github.com/PapirusDevelopmentTeam/papirus-icon-theme>
-
-```bash
-sudo add-apt-repository ppa:papirus/papirus
-sudo apt update
-sudo apt install -y papirus-icon-theme gnome-tweaks
-```
 
 ### Mount Windows Shares
 
@@ -508,64 +444,50 @@ sudo apt install -y cifs-utils
 sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
 ```
 
-### UI Tweaks
+### Video drivers
 
-#### Pop GTK theme
+#### NVIDIA
 
-<https://github.com/pop-os/gtk-theme>
+In "Software & Updates" settings / "Additional Drivers" select latest NVIDIA
+driver package; apply; reboot.
+
+This will install both graphics and OpenCL drivers.
+
+At the moment of writing NVIDIA driver package is `nvidia-driver-435`.
+
+#### Intel OpenCL
+
+Install OpenCL drivers for integrated Intel video card.
+
+<https://github.com/intel/compute-runtime>
+
+Follow instructions in the latest release.
+
+#### AMD OpenCL
+
+Install OpenCL drivers for external AMD video card.
+
+Download drivers package from <https://www.amd.com/en/support/>.
+
+Download link for AMD RX 580: <https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-580>
+
+Uncompress the package.
+
+In the `amdgpu-install` script add `elementary` to the list of supported distributions (around L134)
 
 ```bash
-sudo apt install sassc meson libglib2.0-dev
+function os_release() {
+  if [[ -r  /etc/os-release ]]; then
+    . /etc/os-release
 
-# Optional:
-sudo apt install inkscape optipng
-
-# Optional:
-sudo apt remove pop-gtk-theme
-sudo rm -rf /usr/share/themes/Pop*
-rm -rf ~/.local/share/themes/Pop*
-rm -rf ~/.themes/Pop*
-
-git clone https://github.com/pop-os/gtk-theme
-cd gtk-theme
-
-meson build && cd build
-ninja
-sudo ninja install
+  case "$ID" in
+    ubuntu|linuxmint|debian|elementary)
+      :
+      ;;
 ```
 
-#### GNOME Extensions
-
-<https://extensions.gnome.org>
-
-- [Caffeine](https://extensions.gnome.org/extension/517/caffeine/)
-- [Clipboard Indicator](https://extensions.gnome.org/extension/779/clipboard-indicator/)
-- [cpufreq](https://extensions.gnome.org/extension/1082/cpufreq/)
-- [Dash to Panel](https://extensions.gnome.org/extension/1160/dash-to-panel/)
-- [Dynamic Panel Transparency](https://extensions.gnome.org/extension/1011/dynamic-panel-transparency/)
-- [Topicons Plus](https://extensions.gnome.org/extension/1031/topicons/)
-- [Vitals](https://extensions.gnome.org/extension/1460/vitals/)
-
-#### UI settings
-
-GNOME Tweaks:
-
-- Set UI theme to `Pop`
-- Set icons theme to `Papirus`
-
-Increase cursor size:
+From the drivers directory, run
 
 ```bash
-gsettings set org.gnome.desktop.interface cursor-size 32
-```
-
-
-### Cleanup
-
-Remove unused fonts (`synaptic`'s "Fonts" section) - Ubuntu installs lots of them.
-
-Remove Snap:
-
-```bash
-sudo apt remove snapd
+./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
 ```
