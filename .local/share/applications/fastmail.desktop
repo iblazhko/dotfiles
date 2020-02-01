@@ -1,9 +1,0 @@
-[Desktop Entry]
-Version=1.0
-Type=Application
-Name=FastMail
-Icon=/opt/fastmail/resources/app/icon.png
-Exec="/opt/fastmail/fastmail" %f
-Comment=Mail, calendars, contacts.
-Categories=Office;Productivity;
-Terminal=false
