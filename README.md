@@ -37,6 +37,7 @@ cat ~/.ssh/some_name.pub
 <https://github.com/elementary-tweaks/elementary-tweaks>
 
 ```bash
+sudo apt install software-properties-common
 sudo add-apt-repository ppa:philip.scott/elementary-tweaks
 sudo apt install elementary-tweaks
 ```
@@ -130,6 +131,10 @@ sudo apt install \
 - Zoom: <https://zoom.us/download?os=linux>
 - Viber: <https://www.viber.com/download/>
 - Skype: <https://www.skype.com/en/get-skype/>
+- ExpanDrive: <https://www.expandrive.com/>
+- MEGA: <https://mega.nz/sync>
+- MullvadVPN: <https://mullvad.net/en/>
+- Kubefwd: <https://github.com/txn2/kubefwd/releases>
 
 ### Firefox
 
@@ -342,6 +347,17 @@ After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>,
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
 ```
 
+#### `kubectx`/`kubens`
+
+```bash
+cd ~/Downloads
+git clone https://github.com/ahmetb/kubectx.git
+
+mkdir ~/.local/bin
+cp kubectx/kubectx kubectx/kubens  ~/.local/bin
+rm -rf kubectx
+```
+
 ### JetBrains IDEs
 
 - Rider: <https://www.jetbrains.com/rider/download> -> `/opt/jetbrains_rider`
@@ -505,4 +521,14 @@ From the drivers directory, run
 
 ```bash
 ./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
+```
+
+### App Indicators
+
+<https://www.linuxuprising.com/2018/08/how-to-re-enable-ayatana-appindicators.html>
+<https://github.com/mdh34/elementary-indicators>
+
+```bash
+cp /etc/xdg/autostart/indicator-application.desktop ~/.config/autostart/
+sed -i 's/^OnlyShowIn.*/OnlyShowIn=Unity;GNOME;Pantheon;/' ~/.config/autostart/indicator-application.desktop
 ```
