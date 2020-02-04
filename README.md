@@ -93,6 +93,7 @@ sudo apt install \
 - AppEditor
 - Chromium Browser
 - Contacts
+- Cyfrif
 - DConf editor
 - Eddy
 - Firefox Browser
@@ -131,12 +132,23 @@ sudo apt install \
 - Zoom: <https://zoom.us/download?os=linux>
 - Viber: <https://www.viber.com/download/>
 - Skype: <https://www.skype.com/en/get-skype/>
-- ExpanDrive: <https://www.expandrive.com/>
-- MEGA: <https://mega.nz/sync>
 - MullvadVPN: <https://mullvad.net/en/>
 - Kubefwd: <https://github.com/txn2/kubefwd/releases>
 
-### Firefox
+### Brave Browser
+
+<https://brave.com/download/>
+<https://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux>
+
+```bash
+sudo apt install apt-transport-https curl
+curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
+echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
+sudo apt update
+sudo apt install brave-browser
+```
+
+### Firefox Browser
 
 - enable FireFox sync
 - set DuckDuckGo as default search engine
@@ -356,6 +368,16 @@ git clone https://github.com/ahmetb/kubectx.git
 mkdir ~/.local/bin
 cp kubectx/kubectx kubectx/kubens  ~/.local/bin
 rm -rf kubectx
+```
+
+#### Helm
+
+<https://github.com/helm/helm/releases>
+
+Download release, uncompress, move `helm` to `~/.local.bin`:
+
+```bash
+mv linux-amd64/helm ~/.local/bin
 ```
 
 ### JetBrains IDEs
