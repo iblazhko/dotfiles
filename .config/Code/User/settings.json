@@ -1,9 +1,15 @@
 {
     //--workspace
-    "workbench.colorTheme": "Mariana Pro (Cool)",
+    "workbench.colorTheme": "Monokai Pro (Filter Machine)",
+    "workbench.iconTheme": "Monokai Pro (Filter Machine) Icons",
     "workbench.startupEditor": "newUntitledFile",
+    "workbench.colorCustomizations": {
+        "editorIndentGuide.activeBackground": "#c0c0c020",
+        "editorIndentGuide.background": "#c0c0c008",
+        "editorRuler.foreground": "#d0d0d010"
+    },
     //--window
-    "window.zoomLevel": 2,
+    "window.zoomLevel": 1,
     //--editor
     "editor.fontFamily": "'PragmataPro Mono Liga','Input Mono Condensed',monospace",
     "editor.fontSize": 16,
