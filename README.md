@@ -42,6 +42,9 @@ sudo add-apt-repository ppa:philip.scott/elementary-tweaks
 sudo apt install elementary-tweaks
 ```
 
+- "Files": disable single click
+- "Terminal": set solid background color
+
 ### `sysctl` Tweaks
 
 ```bash
@@ -50,10 +53,29 @@ vm.swappiness=10
 vm.vfs_cache_pressure=50
 
 fs.inotify.max_user_watches=1048576
-fs.inotify.max_user_instances=256
+fs.inotify.max_user_instances=1024
 """ | sudo tee --append /etc/sysctl.conf
 
 sudo /sbin/sysctl -p
+```
+
+### Application Indicators
+
+- <https://elementaryos.stackexchange.com/questions/17452/how-to-display-system-tray-icons-in-elementary-os-juno>
+- <https://elementaryos.stackexchange.com/questions/21547/double-wi-fi-icon-after-installing-wingpanel-indicator-ayatana>
+
+```bash
+sudo add-apt-repository ppa:yunnxx/elementary
+sudo apt update
+sudo apt install indicator-application wingpanel-indicator-ayatana
+sudo sed -i -e 's/OnlyShowIn=Unity;GNOME;/OnlyShowIn=Unity;GNOME;Pantheon;/g' /etc/xdg/autostart/indicator-application.desktop
+sudo mv /etc/xdg/autostart/nm-applet.desktop /etc/xdg/autostart/nm-applet.orig
+```
+
+Log out and log back in, or
+
+```bash
+sudo service lightdm restart
 ```
 
 ## Software
@@ -119,16 +141,15 @@ sudo apt install \
 - LibreOffice: <https://flathub.org/apps/details/org.libreoffice.LibreOffice>
 - Remmina: <https://flathub.org/apps/details/org.remmina.Remmina>
 - Cawbird: <https://flathub.org/apps/details/uk.co.ibboard.cawbird>
-
-- DarkTable: <https://flathub.org/apps/details/org.darktable.Darktable> **TODO:** Wait until 3.0 binaries are available.
+- DarkTable: <https://flathub.org/apps/details/org.darktable.Darktable>
 
 ### DEBs Software
 
 - VisualStudio Code: <https://code.visualstudio.com/>
 - Beyond Compare: <https://scootersoftware.com>
 - DisplayCal: <https://displaycal.net/>
-- Everdo Desktop: <https://everdo.us15.list-manage.com/track/click?u=b1bbf304b9fe6c4945443597b&id=01cdfac3d3&e=6c3ec5f512>
 - Slack: <https://slack.com/intl/en-gb/downloads/linux>
+- Teams: <https://products.office.com/en-gb/microsoft-teams/download-app>
 - Zoom: <https://zoom.us/download?os=linux>
 - Viber: <https://www.viber.com/download/>
 - Skype: <https://www.skype.com/en/get-skype/>
@@ -225,8 +246,8 @@ sudo apt install -y apt-transport-https
 wget https://dot.net/v1/dotnet-install.sh
 chmod +x ./dotnet-install.sh
 
-sudo ./dotnet-install.sh --version 2.2.207 --install-dir /opt/dotnet
-sudo ./dotnet-install.sh --version 3.1.101 --install-dir /opt/dotnet
+sudo ./dotnet-install.sh --version 3.1.103 --install-dir /opt/dotnet
+# sudo ./dotnet-install.sh --version 3.1.201 --install-dir /opt/dotnet
 
 echo 'export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"\nexport DOTNET_ROOT=/opt/dotnet' | sudo tee /etc/profile.d/dotnet-path.sh
 source /etc/profile.d/dotnet-path.sh
@@ -284,10 +305,10 @@ sudo apt install sbt
 ### NodeJS+NPM
 
 ```bash
-wget https://nodejs.org/dist/v12.13.0/node-v12.13.0-linux-x64.tar.xz
-tar xvf node-v12.13.0-linux-x64.tar.xz
+wget https://nodejs.org/dist/v12.16.2/node-v12.16.2-linux-x64.tar.xz
+tar xvf node-v12.16.2-linux-x64.tar.xz
 
-sudo mv node-v12.13.0-linux-x64 /opt/nodejs
+sudo mv node-v12.16.2-linux-x64 /opt/nodejs
 echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs-path.sh
 ```
 
@@ -307,12 +328,12 @@ npm install -g newman
 sudo apt update
 sudo apt install ca-certificates curl apt-transport-https lsb-release gnupg
 
-curl -sL https://packages.microsoft.com/keys/microsoft.asc | 
-    gpg --dearmor | 
+curl -sL https://packages.microsoft.com/keys/microsoft.asc |
+    gpg --dearmor |
     sudo tee /etc/apt/trusted.gpg.d/microsoft.asc.gpg > /dev/null
 
 AZ_REPO=bionic
-echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" | 
+echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO main" |
     sudo tee /etc/apt/sources.list.d/azure-cli.list
 
 sudo apt update
@@ -416,7 +437,7 @@ mkdir ~/.local/share/fonts
 
 mv OpenType ~/.local/share/fonts/IBM_Plex
 mv Input-Font/Input_Fonts ~/.local/share/fonts/
-mv FiraCode_2/otf ~/.local/share/fonts/FiraCode
+mv FiraCode_3.1/otf ~/.local/share/fonts/FiraCode
 mv source-code-pro-2.030R-ro-1.050R-it/OTF ~/.local/share/fonts/SourceCode
 mv source-sans-pro-3.006R/OTF ~/.local/share/fonts/SourceSans
 mv source-serif-pro-3.000R/OTF ~/.local/share/fonts/SourceSerif
@@ -425,13 +446,8 @@ mv PragmataPro ~/.local/share/fonts/PragmataPro
 fc-cache -f -r -v
 ```
 
-### Joplin
-
-```bash
-wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
-```
-
 ### Typora
+
 <https://typora.io/>
 
 ```bash
@@ -450,6 +466,12 @@ sudo apt-get install typora
 ## Optional / Considerations
 
 Following are links for software that is not needed in Elementary or I may consider using in the future.
+
+### Joplin
+
+```bash
+wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
+```
 
 ### Erlang+Elixir
 
@@ -486,7 +508,6 @@ sudo apt install r-base
 ```bash
 curl -fsSL https://get.pulumi.com | sh
 ```
-
 
 ### Mount Windows Shares
 
@@ -543,14 +564,4 @@ From the drivers directory, run
 
 ```bash
 ./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
-```
-
-### App Indicators
-
-<https://www.linuxuprising.com/2018/08/how-to-re-enable-ayatana-appindicators.html>
-<https://github.com/mdh34/elementary-indicators>
-
-```bash
-cp /etc/xdg/autostart/indicator-application.desktop ~/.config/autostart/
-sed -i 's/^OnlyShowIn.*/OnlyShowIn=Unity;GNOME;Pantheon;/' ~/.config/autostart/indicator-application.desktop
 ```
