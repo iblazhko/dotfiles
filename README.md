@@ -44,6 +44,13 @@ sudo apt install elementary-tweaks
 
 - "Files": disable single click
 - "Terminal": set solid background color
+- "Terminal": disable "Natural copy paste"
+
+```bash
+cp -R ./.local/share/plank/themes/Mac ~/.local/share/plank/themes
+```
+
+Set Plank theme to `Mac`.
 
 ### `sysctl` Tweaks
 
@@ -58,6 +65,19 @@ fs.inotify.max_user_instances=1024
 
 sudo /sbin/sysctl -p
 ```
+
+### Power Management
+
+#### PowerTop
+
+```bash
+sudo powertop --auto-tune
+sudo powertop --calibrate
+```
+
+#### Undervolting
+
+<https://github.com/georgewhewell/undervolt>
 
 ### Application Indicators
 
@@ -94,6 +114,7 @@ sudo apt install \
  sysstat \
  nmon \
  glances \
+ psensor \
  psutils \
  curl \
  file \
@@ -107,24 +128,25 @@ sudo apt install \
  rapid-photo-downloader \
  graphviz \
  openjdk-11-jre-headless \
+ firefox \
+ chromium-browser \
+ dconf-editor \
  -y
  ```
 
 ### ElementaryOS AppCenter Software
 
 - AppEditor
-- Chromium Browser
 - Contacts
 - Cyfrif
-- DConf editor
 - Eddy
-- Firefox Browser
 - Fondo
 - Formatter
 - Image Burner
 - Monitor
 - Palaura (dictionary)
 - Screen Recorder
+- Webpin
 
 ### Flatpak Software
 
@@ -142,17 +164,17 @@ sudo apt install \
 - Remmina: <https://flathub.org/apps/details/org.remmina.Remmina>
 - Cawbird: <https://flathub.org/apps/details/uk.co.ibboard.cawbird>
 - DarkTable: <https://flathub.org/apps/details/org.darktable.Darktable>
+- Slack: <https://flathub.org/apps/details/com.slack.Slack>
+- Zoom: <https://flathub.org/apps/details/us.zoom.Zoom>
+- Skype: <https://flathub.org/apps/details/com.skype.Client>
+- Viber: <https://flathub.org/apps/details/com.viber.Viber>
 
 ### DEBs Software
 
+- Ulauncher <https://ulauncher.io/>
 - VisualStudio Code: <https://code.visualstudio.com/>
 - Beyond Compare: <https://scootersoftware.com>
 - DisplayCal: <https://displaycal.net/>
-- Slack: <https://slack.com/intl/en-gb/downloads/linux>
-- Teams: <https://products.office.com/en-gb/microsoft-teams/download-app>
-- Zoom: <https://zoom.us/download?os=linux>
-- Viber: <https://www.viber.com/download/>
-- Skype: <https://www.skype.com/en/get-skype/>
 - MullvadVPN: <https://mullvad.net/en/>
 - Kubefwd: <https://github.com/txn2/kubefwd/releases>
 
@@ -462,6 +484,34 @@ sudo apt-get update
 # install typora
 sudo apt-get install typora
 ```
+
+### Todoist
+
+<https://github.com/KryDos/todoist-linux/releases>
+
+### Notion
+
+Use `Webpin` to create <https://notion.so> webapp shortcut.
+Use icon `icons/notion.png`.
+
+### SimpleNote
+
+<https://github.com/Automattic/simplenote-electron/releases>
+
+### Stacer
+
+<https://github.com/oguzhaninan/Stacer>
+
+```bash
+sudo add-apt-repository ppa:oguzhaninan/stacer -y
+sudo apt-get update
+sudo apt-get install stacer -y
+```
+
+### GeekBench
+
+<https://www.geekbench.com/download/>
+
 
 ## Optional / Considerations
 
