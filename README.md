@@ -5,9 +5,9 @@ Scripts and configurations for setting up my Linux environment.
 ## Operating system installation
 
 Download Elementary OS from <https://elementary.io>.
-To make bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://www.balena.io/etcher/> on macOS / Linux.
+To make bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://www.balena.io/etcher/> (macOS/Linux/Windows).
 
-At the moment of writing ElementaryOS version is `5.1 Hera`.
+At the moment of writing ElementaryOS version is `5.1.4 Hera`.
 
 During installation enable disk encryption.
 
@@ -45,6 +45,11 @@ sudo apt install elementary-tweaks
 - "Files": disable single click
 - "Terminal": set solid background color
 - "Terminal": disable "Natural copy paste"
+- Adjust fonts settings (once the fonts below installed):
+  - Default font: `Fira Sans Regular 11`
+  - Document font: `Fira Sans Regular 12`
+  - Monospace font: `Input Mono Regular 12`
+  - Titlebar font: `Fira Sans SemiBold 12`
 
 ```bash
 cp -R ./.local/share/plank/themes/Mac ~/.local/share/plank/themes
@@ -77,7 +82,8 @@ sudo powertop --calibrate
 
 #### Undervolting
 
-<https://github.com/georgewhewell/undervolt>
+- <https://github.com/kitsunyan/intel-undervolt>
+- <https://github.com/georgewhewell/undervolt>
 
 ### Application Indicators
 
@@ -98,41 +104,58 @@ Log out and log back in, or
 sudo service lightdm restart
 ```
 
+### Video drivers
+
+#### NVIDIA
+
+In "AppCenter" / "Drivers" select latest NVIDIA driver package; apply; reboot.
+
+This will install both graphics and OpenCL drivers.
+
+At the moment of writing NVIDIA driver package is `nvidia-driver-440`.
+
+#### Intel OpenCL
+
+Install OpenCL drivers for integrated Intel video card.
+
+<https://github.com/intel/compute-runtime>
+
+Follow instructions in the latest release.
+
 ## Software
 
 ### APT Software
 
 ```bash
 sudo apt update
-sudo apt upgrade
-
 sudo apt install \
  build-essential \
- tlp \
- powertop \
+ git \
+ vim \
+ p7zip \
+ chromium-browser \
+ firefox \
+ curl \
+ wget \
+ httpie \
+ file \
  cpufrequtils \
- sysstat \
- nmon \
  glances \
+ htop \
+ neofetch \
+ nmon \
+ powertop \
  psensor \
  psutils \
- curl \
- file \
- git \
- htop \
- httpie \
- p7zip \
- vim \
- wget \
- clinfo \
- rapid-photo-downloader \
+ sysstat \
+ tlp \
+ dconf-editor \
  graphviz \
  openjdk-11-jre-headless \
- firefox \
- chromium-browser \
- dconf-editor \
+ rapid-photo-downloader \
+ clinfo \
  -y
- ```
+```
 
 ### ElementaryOS AppCenter Software
 
@@ -168,6 +191,27 @@ sudo apt install \
 - Zoom: <https://flathub.org/apps/details/us.zoom.Zoom>
 - Skype: <https://flathub.org/apps/details/com.skype.Client>
 - Viber: <https://flathub.org/apps/details/com.viber.Viber>
+
+```bash
+flatpak install flathub com.bitwarden.desktop
+flatpak install flathub com.calibre_ebook.calibre
+flatpak install flathub com.getpostman.Postman
+flatpak install flathub com.github.marktext.marktext
+flatpak install flathub com.leinardi.gwe
+flatpak install flathub com.obsproject.Studio
+flatpak install flathub com.rawtherapee.RawTherapee
+flatpak install flathub org.audacityteam.Audacity
+flatpak install flathub org.gimp.GIMP
+flatpak install flathub org.kde.kdenlive
+flatpak install flathub org.libreoffice.LibreOffice
+flatpak install flathub org.remmina.Remmina
+flatpak install flathub uk.co.ibboard.cawbird
+flatpak install flathub org.darktable.Darktable
+flatpak install flathub com.slack.Slack
+flatpak install flathub us.zoom.Zoom
+flatpak install flathub com.skype.Client
+flatpak install flathub com.viber.Viber
+```
 
 ### DEBs Software
 
@@ -238,14 +282,13 @@ cp .config/sublime-text-3/Packages/User/Preferences.sublime-settings ~/.config/s
 - <https://docs.docker.com/install/linux/linux-postinstall>
 
 ```bash
-sudo apt remove -y docker docker-engine docker-compose docker.io containerd runc
+# sudo apt remove -y docker docker-engine docker-compose docker.io containerd runc
 
 sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
 sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 sudo apt update
-
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose
 
 sudo systemctl enable docker
@@ -283,7 +326,7 @@ dotnet --info
 
 ### PowerShell
 
-<https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-6>
+<https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-7>
 
 ```bash
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
@@ -293,28 +336,6 @@ rm packages-microsoft-prod.deb
 sudo apt update
 sudo apt install -y powershell
 ```
-
-### Rust
-
-- <https://www.rust-lang.org>
-- <https://www.rust-lang.org/tools/install>
-
-```bash
-curl https://sh.rustup.rs -sSf | sh
-```
-
-### Haskell
-
-<https://docs.haskellstack.org>
-
-```bash
-curl -sSL https://get.haskellstack.org/ | sh
-```
-
-### Scala/SBT
-
-- <https://www.scala-lang.org/>
-- <https://www.scala-sbt.org/download.html>
 
 ```bash
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
@@ -440,6 +461,7 @@ Download IBM Plex: <https://www.ibm.com/plex/>
 wget https://github.com/IBM/plex/releases/download/v4.0.2/OpenType.zip
 ```
 
+Download Fira Sans: <https://www.fontsquirrel.com/fonts/fira-sans>
 Download Fira Code: <https://github.com/tonsky/FiraCode>
 
 Download Adobe Source fonts:
@@ -459,6 +481,7 @@ mkdir ~/.local/share/fonts
 
 mv OpenType ~/.local/share/fonts/IBM_Plex
 mv Input-Font/Input_Fonts ~/.local/share/fonts/
+mv fira-sans ~/.local/share/fonts/FiraSans
 mv FiraCode_3.1/otf ~/.local/share/fonts/FiraCode
 mv source-code-pro-2.030R-ro-1.050R-it/OTF ~/.local/share/fonts/SourceCode
 mv source-sans-pro-3.006R/OTF ~/.local/share/fonts/SourceSans
@@ -473,21 +496,18 @@ fc-cache -f -r -v
 <https://typora.io/>
 
 ```bash
-# or run:
 # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
 wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
-
-# add Typora's repository
 sudo add-apt-repository 'deb https://typora.io/linux ./'
-sudo apt-get update
-
-# install typora
-sudo apt-get install typora
+sudo apt update
+sudo apt install typora
 ```
 
 ### Todoist
 
 <https://github.com/KryDos/todoist-linux/releases>
+
+Alternatively, use `Webpin` to create <https://todoist.com/app> webapp shortcut.
 
 ### Notion
 
@@ -498,20 +518,21 @@ Use icon `icons/notion.png`.
 
 <https://github.com/Automattic/simplenote-electron/releases>
 
+Alternatively, use `Webpin` to create <https://app.simplenote.com/> webapp shortcut.
+
 ### Stacer
 
 <https://github.com/oguzhaninan/Stacer>
 
 ```bash
 sudo add-apt-repository ppa:oguzhaninan/stacer -y
-sudo apt-get update
-sudo apt-get install stacer -y
+sudo apt update
+sudo apt install stacer -y
 ```
 
 ### GeekBench
 
 <https://www.geekbench.com/download/>
-
 
 ## Optional / Considerations
 
@@ -522,6 +543,28 @@ Following are links for software that is not needed in Elementary or I may consi
 ```bash
 wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
 ```
+
+### Rust
+
+- <https://www.rust-lang.org>
+- <https://www.rust-lang.org/tools/install>
+
+```bash
+curl https://sh.rustup.rs -sSf | sh
+```
+
+### Haskell
+
+<https://docs.haskellstack.org>
+
+```bash
+curl -sSL https://get.haskellstack.org/ | sh
+```
+
+### Scala/SBT
+
+- <https://www.scala-lang.org/>
+- <https://www.scala-sbt.org/download.html>
 
 ### Erlang+Elixir
 
@@ -539,14 +582,13 @@ sudo apt install esl-erlang elixir
 ### R
 
 - <https://www.r-project.org/>
-- <https://linuxize.com/post/how-to-install-r-on-ubuntu-18-04/>
 - <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
 
 ```bash
 sudo apt install apt-transport-https software-properties-common
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
-sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran35/'
+sudo add-apt-repository 'deb https://cloud.r-project.org/bin/linux/ubuntu bionic-cran40/'
 
 sudo apt install r-base
 ```
@@ -568,32 +610,11 @@ sudo apt install -y cifs-utils
 sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
 ```
 
-### Video drivers
-
-#### NVIDIA
-
-In "Software & Updates" settings / "Additional Drivers" select latest NVIDIA
-driver package; apply; reboot.
-
-This will install both graphics and OpenCL drivers.
-
-At the moment of writing NVIDIA driver package is `nvidia-driver-435`.
-
-#### Intel OpenCL
-
-Install OpenCL drivers for integrated Intel video card.
-
-<https://github.com/intel/compute-runtime>
-
-Follow instructions in the latest release.
-
-#### AMD OpenCL
+### AMD OpenCL
 
 Install OpenCL drivers for external AMD video card.
 
-Download drivers package from <https://www.amd.com/en/support/>.
-
-Download link for AMD RX 580: <https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-580>
+Download drivers package from <https://www.amd.com/en/support/>. E.g. for AMD RX 580: <https://www.amd.com/en/support/graphics/radeon-500-series/radeon-rx-500-series/radeon-rx-580>
 
 Uncompress the package.
 
