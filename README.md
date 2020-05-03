@@ -76,8 +76,8 @@ sudo /sbin/sysctl -p
 #### PowerTop
 
 ```bash
-sudo powertop --auto-tune
 sudo powertop --calibrate
+sudo powertop --auto-tune
 ```
 
 #### Undervolting
@@ -193,24 +193,26 @@ sudo apt install \
 - Viber: <https://flathub.org/apps/details/com.viber.Viber>
 
 ```bash
-flatpak install flathub com.bitwarden.desktop
-flatpak install flathub com.calibre_ebook.calibre
-flatpak install flathub com.getpostman.Postman
-flatpak install flathub com.github.marktext.marktext
-flatpak install flathub com.leinardi.gwe
-flatpak install flathub com.obsproject.Studio
-flatpak install flathub com.rawtherapee.RawTherapee
-flatpak install flathub org.audacityteam.Audacity
-flatpak install flathub org.gimp.GIMP
-flatpak install flathub org.kde.kdenlive
-flatpak install flathub org.libreoffice.LibreOffice
-flatpak install flathub org.remmina.Remmina
-flatpak install flathub uk.co.ibboard.cawbird
-flatpak install flathub org.darktable.Darktable
-flatpak install flathub com.slack.Slack
-flatpak install flathub us.zoom.Zoom
-flatpak install flathub com.skype.Client
-flatpak install flathub com.viber.Viber
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
+flatpak install -y flathub com.bitwarden.desktop
+flatpak install -y flathub com.calibre_ebook.calibre
+flatpak install -y flathub com.getpostman.Postman
+flatpak install -y flathub com.github.marktext.marktext
+flatpak install -y flathub com.leinardi.gwe
+flatpak install -y flathub com.obsproject.Studio
+flatpak install -y flathub com.rawtherapee.RawTherapee
+flatpak install -y flathub org.audacityteam.Audacity
+flatpak install -y flathub org.gimp.GIMP
+flatpak install -y flathub org.kde.kdenlive
+flatpak install -y flathub org.libreoffice.LibreOffice
+flatpak install -y flathub org.remmina.Remmina
+flatpak install -y flathub uk.co.ibboard.cawbird
+flatpak install -y flathub org.darktable.Darktable
+flatpak install -y flathub com.slack.Slack
+flatpak install -y flathub us.zoom.Zoom
+flatpak install -y flathub com.skype.Client
+flatpak install -y flathub com.viber.Viber
 ```
 
 ### DEBs Software
@@ -335,14 +337,6 @@ rm packages-microsoft-prod.deb
 
 sudo apt update
 sudo apt install -y powershell
-```
-
-```bash
-echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
-curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
-
-sudo apt update
-sudo apt install sbt
 ```
 
 ### NodeJS+NPM
@@ -565,6 +559,15 @@ curl -sSL https://get.haskellstack.org/ | sh
 
 - <https://www.scala-lang.org/>
 - <https://www.scala-sbt.org/download.html>
+
+
+```bash
+echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+
+sudo apt update
+sudo apt install sbt
+```
 
 ### Erlang+Elixir
 
