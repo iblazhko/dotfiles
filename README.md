@@ -19,7 +19,7 @@ During installation enable disk encryption.
 sudo apt install -y zsh git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
-cat ./.zshrc > ~/.zshrc
+cat ./.zshrc | tee ~/.zshrc
 ```
 
 ### SSH Key
@@ -51,6 +51,8 @@ sudo apt install elementary-tweaks
   - Monospace font: `Input Mono Regular 12`
   - Titlebar font: `Fira Sans SemiBold 12`
 
+### Plank Tweaks
+
 ```bash
 cp -R ./.local/share/plank/themes/Mac ~/.local/share/plank/themes
 ```
@@ -76,8 +78,8 @@ sudo /sbin/sysctl -p
 #### PowerTop
 
 ```bash
-sudo powertop --auto-tune
 sudo powertop --calibrate
+sudo powertop --auto-tune
 ```
 
 #### Undervolting
@@ -193,6 +195,8 @@ sudo apt install \
 - Viber: <https://flathub.org/apps/details/com.viber.Viber>
 
 ```bash
+flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+
 flatpak install flathub com.bitwarden.desktop
 flatpak install flathub com.calibre_ebook.calibre
 flatpak install flathub com.getpostman.Postman
@@ -314,8 +318,13 @@ chmod +x ./dotnet-install.sh
 sudo ./dotnet-install.sh --version 3.1.103 --install-dir /opt/dotnet
 # sudo ./dotnet-install.sh --version 3.1.201 --install-dir /opt/dotnet
 
-echo 'export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"\nexport DOTNET_ROOT=/opt/dotnet' | sudo tee /etc/profile.d/dotnet-path.sh
-source /etc/profile.d/dotnet-path.sh
+echo """
+export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"
+export DOTNET_ROOT=/opt/dotnet
+export DOTNET_CLI_TELEMETRY_OPTOUT=1
+""" | sudo tee /etc/profile.d/dotnet.sh
+
+source /etc/profile.d/dotnet.sh
 ```
 
 Verify the installation:
@@ -337,14 +346,6 @@ sudo apt update
 sudo apt install -y powershell
 ```
 
-```bash
-echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
-curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
-
-sudo apt update
-sudo apt install sbt
-```
-
 ### NodeJS+NPM
 
 ```bash
@@ -352,7 +353,7 @@ wget https://nodejs.org/dist/v12.16.2/node-v12.16.2-linux-x64.tar.xz
 tar xvf node-v12.16.2-linux-x64.tar.xz
 
 sudo mv node-v12.16.2-linux-x64 /opt/nodejs
-echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs-path.sh
+echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs.sh
 ```
 
 ### Newman
@@ -565,6 +566,14 @@ curl -sSL https://get.haskellstack.org/ | sh
 
 - <https://www.scala-lang.org/>
 - <https://www.scala-sbt.org/download.html>
+
+```bash
+echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
+curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
+
+sudo apt update
+sudo apt install sbt
+```
 
 ### Erlang+Elixir
 
