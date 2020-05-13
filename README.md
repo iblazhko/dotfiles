@@ -155,6 +155,7 @@ sudo apt install \
  graphviz \
  openjdk-11-jre-headless \
  rapid-photo-downloader \
+ mediainfo \
  clinfo \
  -y
 ```
@@ -362,6 +363,18 @@ echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs.sh
 sudo -i
 source /etc/profile.d/nodejs-path.sh
 npm install -g newman
+```
+
+### Python
+
+```bash
+sudo apt install python3-venv python3-pip python3.8 python3.8-dev python3.8-venv
+```
+
+For `wxPython` support:
+
+```bash
+sudo apt install libgtk-3-dev
 ```
 
 ### Azure CLI
