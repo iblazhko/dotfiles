@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=Etcher
+Exec=/opt/balenaEtcher.AppImage
+Icon=/home/iblazhko/Pictures/icons/balenaEtcher.png
+Comment=Balena Etcher
+Categories=Tools;
+Terminal=false

@@ -548,6 +548,19 @@ sudo apt install stacer -y
 
 <https://www.geekbench.com/download/>
 
+### Balena Etcher
+
+<https://www.balena.io/etcher/>
+
+```bash
+wget https://github.com/balena-io/etcher/releases/download/v1.5.88/balenaEtcher-1.5.88-x64.AppImage
+chmod +x balenaEtcher-1.5.88-x64.AppImage
+sudo mv balenaEtcher-1.5.88-x64.AppImage /opt/balenaEtcher.AppImage
+
+cp ./.local/share/applications/balenaEtcher.desktop ~/.local/share/applications/balenaEtcher.desktop
+cp ./icons/balenaEtcher.png ~/icons/balenaEtcher.png
+```
+
 ## Optional / Considerations
 
 Following are links for software that is not needed in Elementary or I may consider using in the future.
