@@ -15,7 +15,7 @@ During installation enable disk encryption.
 
 <https://ohmyz.sh/>
 
-```bash
+```sh
 sudo apt install -y zsh git
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/robbyrussell/oh-my-zsh/master/tools/install.sh)"
 
@@ -26,7 +26,7 @@ cat ./.zshrc | tee ~/.zshrc
 
 Generate SSH key:
 
-```bash
+```sh
 ssh-keygen -f ~/.ssh/some_name -t rsa -b 4096 -C "some_email"
 echo "Public key:"
 cat ~/.ssh/some_name.pub
@@ -36,7 +36,7 @@ cat ~/.ssh/some_name.pub
 
 <https://github.com/elementary-tweaks/elementary-tweaks>
 
-```bash
+```sh
 sudo apt install software-properties-common
 sudo add-apt-repository ppa:philip.scott/elementary-tweaks
 sudo apt install elementary-tweaks
@@ -53,7 +53,7 @@ sudo apt install elementary-tweaks
 
 ### Plank Tweaks
 
-```bash
+```sh
 cp -R ./.local/share/plank/themes/Mac ~/.local/share/plank/themes
 ```
 
@@ -61,7 +61,7 @@ Set Plank theme to `Mac`.
 
 ### `sysctl` Tweaks
 
-```bash
+```sh
 echo """
 vm.swappiness=10
 vm.vfs_cache_pressure=50
@@ -77,7 +77,7 @@ sudo /sbin/sysctl -p
 
 #### PowerTop
 
-```bash
+```sh
 sudo powertop --calibrate
 sudo powertop --auto-tune
 ```
@@ -92,7 +92,7 @@ sudo powertop --auto-tune
 - <https://elementaryos.stackexchange.com/questions/17452/how-to-display-system-tray-icons-in-elementary-os-juno>
 - <https://elementaryos.stackexchange.com/questions/21547/double-wi-fi-icon-after-installing-wingpanel-indicator-ayatana>
 
-```bash
+```sh
 sudo add-apt-repository ppa:yunnxx/elementary
 sudo apt update
 sudo apt install indicator-application wingpanel-indicator-ayatana
@@ -102,7 +102,7 @@ sudo mv /etc/xdg/autostart/nm-applet.desktop /etc/xdg/autostart/nm-applet.orig
 
 Log out and log back in, or
 
-```bash
+```sh
 sudo service lightdm restart
 ```
 
@@ -128,7 +128,7 @@ Follow instructions in the latest release.
 
 ### APT Software
 
-```bash
+```sh
 sudo apt update
 sudo apt install \
  build-essential \
@@ -195,7 +195,7 @@ sudo apt install \
 - Skype: <https://flathub.org/apps/details/com.skype.Client>
 - Viber: <https://flathub.org/apps/details/com.viber.Viber>
 
-```bash
+```sh
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
 flatpak install flathub com.bitwarden.desktop
@@ -232,7 +232,7 @@ flatpak install flathub com.viber.Viber
 <https://brave.com/download/>
 <https://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux>
 
-```bash
+```sh
 sudo apt install apt-transport-https curl
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
 echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
@@ -259,7 +259,7 @@ sudo apt install brave-browser
 
 ### VisualStudio Code Settings
 
-```bash
+```sh
 mkdir -p ~/.config/Code/User
 cp .config/Code/User/settings.json ~/.config/Code/User/
 ```
@@ -269,14 +269,14 @@ cp .config/Code/User/settings.json ~/.config/Code/User/
 - <https://www.sublimetext.com>
 - <https://www.sublimemerge.com>
 
-```bash
+```sh
 wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
 echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime.list
 sudo apt update
 sudo apt install -y sublime-text sublime-merge
 ```
 
-```bash
+```sh
 mkdir -p ~/.config/sublime-text-3/Packages/User
 cp .config/sublime-text-3/Packages/User/Preferences.sublime-settings ~/.config/sublime-text-3/Packages/User
 ```
@@ -286,7 +286,7 @@ cp .config/sublime-text-3/Packages/User/Preferences.sublime-settings ~/.config/s
 - <https://docs.docker.com/install/linux/docker-ce/ubuntu>
 - <https://docs.docker.com/install/linux/linux-postinstall>
 
-```bash
+```sh
 # sudo apt remove -y docker docker-engine docker-compose docker.io containerd runc
 
 sudo apt update
@@ -302,15 +302,24 @@ sudo usermod -aG docker $USER
 
 Re-login, then verify the installation:
 
-```bash
+```sh
 docker run --rm hello-world
+```
+
+#### CTop
+
+<https://github.com/bcicen/ctop>
+
+```sh
+wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 -O ~/.local/bin/ctop
+chmod +x ~/.local/bin/ctop
 ```
 
 ### .NET Core SDK
 
 <https://docs.microsoft.com/en-us/dotnet/core/tools/dotnet-install-script>
 
-```bash
+```sh
 sudo apt install -y apt-transport-https
 
 wget https://dot.net/v1/dotnet-install.sh
@@ -330,7 +339,7 @@ source /etc/profile.d/dotnet.sh
 
 Verify the installation:
 
-```bash
+```sh
 dotnet --info
 ```
 
@@ -338,7 +347,7 @@ dotnet --info
 
 <https://docs.microsoft.com/en-us/powershell/scripting/install/installing-powershell-core-on-linux?view=powershell-7>
 
-```bash
+```sh
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
 sudo apt install ./packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
@@ -349,7 +358,7 @@ sudo apt install -y powershell
 
 ### NodeJS+NPM
 
-```bash
+```sh
 wget https://nodejs.org/dist/v12.16.2/node-v12.16.2-linux-x64.tar.xz
 tar xvf node-v12.16.2-linux-x64.tar.xz
 
@@ -359,7 +368,7 @@ echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs.sh
 
 ### Newman
 
-```bash
+```sh
 sudo -i
 source /etc/profile.d/nodejs-path.sh
 npm install -g newman
@@ -367,13 +376,13 @@ npm install -g newman
 
 ### Python
 
-```bash
+```sh
 sudo apt install python3-venv python3-pip python3.8 python3.8-dev python3.8-venv
 ```
 
 For `wxPython` support:
 
-```bash
+```sh
 sudo apt install libgtk-3-dev
 ```
 
@@ -381,7 +390,7 @@ sudo apt install libgtk-3-dev
 
 <https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-apt?view=azure-cli-latest>
 
-```bash
+```sh
 sudo apt update
 sudo apt install ca-certificates curl apt-transport-https lsb-release gnupg
 
@@ -399,13 +408,13 @@ sudo apt install azure-cli
 
 Initialize:
 
-```bash
+```sh
 az login
 ```
 
 Add Devops extension:
 
-```bash
+```sh
 az extension add --name azure-devops
 ```
 
@@ -414,7 +423,7 @@ az extension add --name azure-devops
 <https://cloud.google.com/sdk/>
 <https://cloud.google.com/sdk/docs/quickstart-debian-ubuntu>
 
-```bash
+```sh
 # Add the Cloud SDK distribution URI as a package source
 echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | sudo tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
 
@@ -427,19 +436,19 @@ sudo apt update && sudo apt install google-cloud-sdk kubectl
 
 Initialize:
 
-```bash
+```sh
 gcloud init
 ```
 
 After logged in, navigate to <https://console.cloud.google.com/kubernetes/list>, select cluster and view command line to connect:
 
-```bash
+```sh
 gcloud container clusters get-credentials dev-cluster --zone <your-zone> --project <your-project>
 ```
 
 #### `kubectx`/`kubens`
 
-```bash
+```sh
 cd ~/Downloads
 git clone https://github.com/ahmetb/kubectx.git
 
@@ -454,7 +463,7 @@ rm -rf kubectx
 
 Download release, uncompress, move `helm` to `~/.local.bin`:
 
-```bash
+```sh
 mv linux-amd64/helm ~/.local/bin
 ```
 
@@ -471,7 +480,7 @@ Download Input fonts: <https://input.fontbureau.com/download/>
 
 Download IBM Plex: <https://www.ibm.com/plex/>
 
-```bash
+```sh
 wget https://github.com/IBM/plex/releases/download/v4.0.2/OpenType.zip
 ```
 
@@ -480,7 +489,7 @@ Download Fira Code: <https://github.com/tonsky/FiraCode>
 
 Download Adobe Source fonts:
 
-```bash
+```sh
 wget https://github.com/adobe-fonts/source-code-pro/releases/download/2.030R-ro%2F1.050R-it/source-code-pro-2.030R-ro-1.050R-it.zip
 wget https://github.com/adobe-fonts/source-serif-pro/releases/download/3.000R/source-serif-pro-3.000R.zip
 wget https://github.com/adobe-fonts/source-sans-pro/releases/download/3.006R/source-sans-pro-3.006R.zip
@@ -490,7 +499,7 @@ Download PragmataPro fonts (link in the email).
 
 ... extract all of the above
 
-```bash
+```sh
 mkdir ~/.local/share/fonts
 
 mv OpenType ~/.local/share/fonts/IBM_Plex
@@ -509,7 +518,7 @@ fc-cache -f -r -v
 
 <https://typora.io/>
 
-```bash
+```sh
 # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
 wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
 sudo add-apt-repository 'deb https://typora.io/linux ./'
@@ -538,7 +547,7 @@ Alternatively, use `Webpin` to create <https://app.simplenote.com/> webapp short
 
 <https://github.com/oguzhaninan/Stacer>
 
-```bash
+```sh
 sudo add-apt-repository ppa:oguzhaninan/stacer -y
 sudo apt update
 sudo apt install stacer -y
@@ -552,7 +561,7 @@ sudo apt install stacer -y
 
 <https://www.balena.io/etcher/>
 
-```bash
+```sh
 wget https://github.com/balena-io/etcher/releases/download/v1.5.88/balenaEtcher-1.5.88-x64.AppImage
 chmod +x balenaEtcher-1.5.88-x64.AppImage
 sudo mv balenaEtcher-1.5.88-x64.AppImage /opt/balenaEtcher.AppImage
@@ -567,7 +576,7 @@ Following are links for software that is not needed in Elementary or I may consi
 
 ### Joplin
 
-```bash
+```sh
 wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_install_and_update.sh | bash
 ```
 
@@ -576,7 +585,7 @@ wget -O - https://raw.githubusercontent.com/laurent22/joplin/master/Joplin_insta
 - <https://www.rust-lang.org>
 - <https://www.rust-lang.org/tools/install>
 
-```bash
+```sh
 curl https://sh.rustup.rs -sSf | sh
 ```
 
@@ -584,7 +593,7 @@ curl https://sh.rustup.rs -sSf | sh
 
 <https://docs.haskellstack.org>
 
-```bash
+```sh
 curl -sSL https://get.haskellstack.org/ | sh
 ```
 
@@ -593,7 +602,7 @@ curl -sSL https://get.haskellstack.org/ | sh
 - <https://www.scala-lang.org/>
 - <https://www.scala-sbt.org/download.html>
 
-```bash
+```sh
 echo "deb https://dl.bintray.com/sbt/debian /" | sudo tee -a /etc/apt/sources.list.d/sbt.list
 curl -sL "https://keyserver.ubuntu.com/pks/lookup?op=get&search=0x2EE0EA64E40A89B84B2DF73499E82A75642AC823" | sudo apt-key add
 
@@ -605,7 +614,7 @@ sudo apt install sbt
 
 <https://elixir-lang.org/install.html>
 
-```bash
+```sh
 wget https://packages.erlang-solutions.com/erlang-solutions_2.0_all.deb
 sudo dpkg -i erlang-solutions_2.0_all.deb
 rm erlang-solutions_2.0_all.deb
@@ -619,7 +628,7 @@ sudo apt install esl-erlang elixir
 - <https://www.r-project.org/>
 - <https://www.digitalocean.com/community/tutorials/how-to-install-r-on-ubuntu-18-04>
 
-```bash
+```sh
 sudo apt install apt-transport-https software-properties-common
 
 sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E298A3A825C0D65DFD57CBB651716619E084DAB9
@@ -632,7 +641,7 @@ sudo apt install r-base
 
 <https://www.pulumi.com/docs/get-started/install/>
 
-```bash
+```sh
 curl -fsSL https://get.pulumi.com | sh
 ```
 
@@ -640,7 +649,7 @@ curl -fsSL https://get.pulumi.com | sh
 
 Example of using a Windows file share:
 
-```bash
+```sh
 sudo apt install -y cifs-utils
 sudo mount -t cifs //192.168.1.172/data /mnt/win-data -o user=testuser
 ```
@@ -655,7 +664,7 @@ Uncompress the package.
 
 In the `amdgpu-install` script add `elementary` to the list of supported distributions (around L134)
 
-```bash
+```sh
 function os_release() {
   if [[ -r  /etc/os-release ]]; then
     . /etc/os-release
@@ -668,6 +677,6 @@ function os_release() {
 
 From the drivers directory, run
 
-```bash
+```sh
 ./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
 ```
