@@ -27,9 +27,9 @@ cat ./.zshrc | tee ~/.zshrc
 Generate SSH key:
 
 ```sh
-ssh-keygen -f ~/.ssh/some_name -t rsa -b 4096 -C "some_email"
+ssh-keygen -f ~/.ssh/$(hostname) -t rsa -b 4096 -C "$(hostname)"
 echo "Public key:"
-cat ~/.ssh/some_name.pub
+cat ~/.ssh/$(hostname).pub
 ```
 
 ### Elementary Tweaks
@@ -37,9 +37,9 @@ cat ~/.ssh/some_name.pub
 <https://github.com/elementary-tweaks/elementary-tweaks>
 
 ```sh
-sudo apt install software-properties-common
-sudo add-apt-repository ppa:philip.scott/elementary-tweaks
-sudo apt install elementary-tweaks
+sudo apt install software-properties-common -y
+sudo add-apt-repository -y ppa:philip.scott/elementary-tweaks
+sudo apt install elementary-tweaks -y
 ```
 
 - "Files": disable single click
@@ -54,6 +54,7 @@ sudo apt install elementary-tweaks
 ### Plank Tweaks
 
 ```sh
+mkdir -p ~/.local/share/plank/themes
 cp -R ./.local/share/plank/themes/Mac ~/.local/share/plank/themes
 ```
 
@@ -77,8 +78,15 @@ sudo /sbin/sysctl -p
 
 #### PowerTop
 
+Calibration may take 15-20min and will turn components on/off (including display and wireless).
+
 ```sh
 sudo powertop --calibrate
+```
+
+After running `powertop` for some time on both AC and battery:
+
+```sh
 sudo powertop --auto-tune
 ```
 
@@ -93,9 +101,9 @@ sudo powertop --auto-tune
 - <https://elementaryos.stackexchange.com/questions/21547/double-wi-fi-icon-after-installing-wingpanel-indicator-ayatana>
 
 ```sh
-sudo add-apt-repository ppa:yunnxx/elementary
+sudo add-apt-repository -y ppa:yunnxx/elementary
 sudo apt update
-sudo apt install indicator-application wingpanel-indicator-ayatana
+sudo apt install -y indicator-application wingpanel-indicator-ayatana
 sudo sed -i -e 's/OnlyShowIn=Unity;GNOME;/OnlyShowIn=Unity;GNOME;Pantheon;/g' /etc/xdg/autostart/indicator-application.desktop
 sudo mv /etc/xdg/autostart/nm-applet.desktop /etc/xdg/autostart/nm-applet.orig
 ```
@@ -111,6 +119,12 @@ sudo service lightdm restart
 #### NVIDIA
 
 In "AppCenter" / "Drivers" select latest NVIDIA driver package; apply; reboot.
+
+Alternatively, install explicitly:
+
+```sh
+sudo apt install -y nvidia-driver-440
+```
 
 This will install both graphics and OpenCL drivers.
 
@@ -167,12 +181,24 @@ sudo apt install \
 - Cyfrif
 - Eddy
 - Fondo
-- Formatter
-- Image Burner
 - Monitor
 - Palaura (dictionary)
 - Screen Recorder
 - Webpin
+
+```sh
+sudo apt install \
+  com.github.donadigo.appeditor \
+  com.github.aggalex.contacts \
+  com.github.aggalex.contacts \
+  com.github.donadigo.eddy \
+  com.github.calo001.fondo \
+  com.github.stsdc.monitor \
+  com.github.lainsce.palaura \
+  com.github.mohelm97.screenrecorder \
+  com.github.artemanufrij.webpin \
+  -y
+```
 
 ### Flatpak Software
 
@@ -198,24 +224,26 @@ sudo apt install \
 ```sh
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 
-flatpak install flathub com.bitwarden.desktop
-flatpak install flathub com.calibre_ebook.calibre
-flatpak install flathub com.getpostman.Postman
-flatpak install flathub com.github.marktext.marktext
-flatpak install flathub com.leinardi.gwe
-flatpak install flathub com.obsproject.Studio
-flatpak install flathub com.rawtherapee.RawTherapee
-flatpak install flathub org.audacityteam.Audacity
-flatpak install flathub org.gimp.GIMP
-flatpak install flathub org.kde.kdenlive
-flatpak install flathub org.libreoffice.LibreOffice
-flatpak install flathub org.remmina.Remmina
-flatpak install flathub uk.co.ibboard.cawbird
-flatpak install flathub org.darktable.Darktable
-flatpak install flathub com.slack.Slack
-flatpak install flathub us.zoom.Zoom
-flatpak install flathub com.skype.Client
-flatpak install flathub com.viber.Viber
+flatpak install flathub \
+  com.bitwarden.desktop \
+  com.calibre_ebook.calibre \
+  com.getpostman.Postman \
+  com.github.marktext.marktext \
+  com.leinardi.gwe \
+  com.obsproject.Studio \
+  com.rawtherapee.RawTherapee \
+  org.audacityteam.Audacity \
+  org.gimp.GIMP \
+  org.kde.kdenlive \
+  org.libreoffice.LibreOffice \
+  org.remmina.Remmina \
+  uk.co.ibboard.cawbird \
+  org.darktable.Darktable \
+  com.slack.Slack \
+  flathub us.zoom.Zoom \
+  flathub com.skype.Client \
+  com.viber.Viber \
+  -y
 ```
 
 ### DEBs Software
@@ -233,11 +261,11 @@ flatpak install flathub com.viber.Viber
 <https://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux>
 
 ```sh
-sudo apt install apt-transport-https curl
+sudo apt install -y apt-transport-https curl
 curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
 echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
 sudo apt update
-sudo apt install brave-browser
+sudo apt install -y brave-browser
 ```
 
 ### Firefox Browser
@@ -292,7 +320,7 @@ cp .config/sublime-text-3/Packages/User/Preferences.sublime-settings ~/.config/s
 sudo apt update
 sudo apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
+sudo add-apt-repository -y "deb [arch=amd64] https://download.docker.com/linux/ubuntu bionic stable"
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-compose
 
@@ -308,9 +336,10 @@ docker run --rm hello-world
 
 #### CTop
 
-<https://github.com/bcicen/ctop>
+<https://ctop.sh/>
 
 ```sh
+mkdir -p ~/.local/bin
 wget https://github.com/bcicen/ctop/releases/download/v0.7.3/ctop-0.7.3-linux-amd64 -O ~/.local/bin/ctop
 chmod +x ~/.local/bin/ctop
 ```
@@ -349,7 +378,7 @@ dotnet --info
 
 ```sh
 wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
-sudo apt install ./packages-microsoft-prod.deb
+sudo apt install -y ./packages-microsoft-prod.deb
 rm packages-microsoft-prod.deb
 
 sudo apt update
@@ -359,10 +388,10 @@ sudo apt install -y powershell
 ### NodeJS+NPM
 
 ```sh
-wget https://nodejs.org/dist/v12.16.2/node-v12.16.2-linux-x64.tar.xz
-tar xvf node-v12.16.2-linux-x64.tar.xz
+wget https://nodejs.org/dist/v12.16.3/node-v12.16.3-linux-x64.tar.xz
+tar xvf node-v12.16.3-linux-x64.tar.xz
 
-sudo mv node-v12.16.2-linux-x64 /opt/nodejs
+sudo mv node-v12.16.3-linux-x64 /opt/nodejs
 echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs.sh
 ```
 
@@ -370,20 +399,20 @@ echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs.sh
 
 ```sh
 sudo -i
-source /etc/profile.d/nodejs-path.sh
+source /etc/profile.d/nodejs.sh
 npm install -g newman
 ```
 
 ### Python
 
 ```sh
-sudo apt install python3-venv python3-pip python3.8 python3.8-dev python3.8-venv
+sudo apt install -y python3-venv python3-pip python3.8 python3.8-dev python3.8-venv
 ```
 
 For `wxPython` support:
 
 ```sh
-sudo apt install libgtk-3-dev
+sudo apt install -y libgtk-3-dev
 ```
 
 ### Azure CLI
@@ -403,7 +432,7 @@ echo "deb [arch=amd64] https://packages.microsoft.com/repos/azure-cli/ $AZ_REPO 
     sudo tee /etc/apt/sources.list.d/azure-cli.list
 
 sudo apt update
-sudo apt install azure-cli
+sudo apt install -y azure-cli
 ```
 
 Initialize:
@@ -431,7 +460,7 @@ echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud
 curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key --keyring /usr/share/keyrings/cloud.google.gpg add -
 
 # Update the package list and install the Cloud SDK
-sudo apt update && sudo apt install google-cloud-sdk kubectl
+sudo apt update && sudo apt install -y google-cloud-sdk kubectl
 ```
 
 Initialize:
@@ -452,7 +481,7 @@ gcloud container clusters get-credentials dev-cluster --zone <your-zone> --proje
 cd ~/Downloads
 git clone https://github.com/ahmetb/kubectx.git
 
-mkdir ~/.local/bin
+mkdir -p ~/.local/bin
 cp kubectx/kubectx kubectx/kubens  ~/.local/bin
 rm -rf kubectx
 ```
@@ -521,9 +550,9 @@ fc-cache -f -r -v
 ```sh
 # sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
 wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
-sudo add-apt-repository 'deb https://typora.io/linux ./'
+sudo add-apt-repository -y 'deb https://typora.io/linux ./'
 sudo apt update
-sudo apt install typora
+sudo apt install -y typora
 ```
 
 ### Todoist
@@ -548,9 +577,9 @@ Alternatively, use `Webpin` to create <https://app.simplenote.com/> webapp short
 <https://github.com/oguzhaninan/Stacer>
 
 ```sh
-sudo add-apt-repository ppa:oguzhaninan/stacer -y
+sudo add-apt-repository -y ppa:oguzhaninan/stacer
 sudo apt update
-sudo apt install stacer -y
+sudo apt install -y stacer
 ```
 
 ### GeekBench
@@ -562,12 +591,13 @@ sudo apt install stacer -y
 <https://www.balena.io/etcher/>
 
 ```sh
-wget https://github.com/balena-io/etcher/releases/download/v1.5.88/balenaEtcher-1.5.88-x64.AppImage
-chmod +x balenaEtcher-1.5.88-x64.AppImage
-sudo mv balenaEtcher-1.5.88-x64.AppImage /opt/balenaEtcher.AppImage
+wget https://github.com/balena-io/etcher/releases/download/v1.5.89/balenaEtcher-1.5.89-x64.AppImage
+chmod +x balenaEtcher-1.5.89-x64.AppImage
+sudo mv balenaEtcher-1.5.89-x64.AppImage /opt/balenaEtcher.AppImage
 
+mkdir -p ~/.local/share/applications
 cp ./.local/share/applications/balenaEtcher.desktop ~/.local/share/applications/balenaEtcher.desktop
-cp ./icons/balenaEtcher.png ~/icons/balenaEtcher.png
+cp ./icons/balenaEtcher.png ~/Pictures/icons/balenaEtcher.png
 ```
 
 ## Optional / Considerations
