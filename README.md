@@ -5,9 +5,9 @@ Scripts and configurations for setting up my Linux environment.
 ## Operating system installation
 
 Download Elementary OS from <https://elementary.io>.
-To make bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://www.balena.io/etcher/> (macOS/Linux/Windows).
+To make a bootable USB drive use <https://rufus.ie/> (Windows-only) or <https://www.balena.io/etcher/> (macOS/Linux/Windows).
 
-At the moment of writing ElementaryOS version is `5.1.4 Hera`.
+At the moment of writing ElementaryOS version is `5.1.5 Hera`.
 
 During installation enable disk encryption.
 
@@ -130,6 +130,26 @@ This will install both graphics and OpenCL drivers.
 
 At the moment of writing NVIDIA driver package is `nvidia-driver-440`.
 
+##### Screen Tearing
+
+<https://github.com/Askannz/nvidia-force-comp-pipeline>
+
+Enable `Force Composition Pipeline` on all monitors connected to an Nvidia card as a workaround against screen tearing:
+
+```sh
+echo """
+[Desktop Entry]
+Type=Application
+Name=Force Composition Pipeline (NVIDIA)
+Comment=Simple script to enable 'Force Composition Pipeline' on all monitors connected to an NVIDIA card as a workaround against screen tearing.
+Exec=/usr/local/bin/nvidia-force-comp-pipeline
+""" | sudo tee /etc/xdg/autostart/nvidia-settings-force-comp-pipeline.desktop
+
+git clone https://github.com/Askannz/nvidia-force-comp-pipeline
+sudo cp nvidia-force-comp-pipeline/nvidia-force-comp-pipeline /usr/local/bin/
+rm -rf nvidia-force-comp-pipeline
+```
+
 #### Intel OpenCL
 
 Install OpenCL drivers for integrated Intel video card.
@@ -155,6 +175,7 @@ sudo apt install \
  wget \
  httpie \
  file \
+ cifs-utils \
  cpufrequtils \
  glances \
  htop \
@@ -185,6 +206,7 @@ sudo apt install \
 - Palaura (dictionary)
 - Screen Recorder
 - Webpin
+- Optimizer
 
 ```sh
 sudo apt install \
@@ -197,6 +219,7 @@ sudo apt install \
   com.github.lainsce.palaura \
   com.github.mohelm97.screenrecorder \
   com.github.artemanufrij.webpin \
+  com.github.hannesschulze.optimizer \
   -y
 ```
 
@@ -207,19 +230,20 @@ sudo apt install \
 - Postman: <https://flathub.org/apps/details/com.getpostman.Postman>
 - Marktext: <https://flathub.org/apps/details/com.github.marktext.marktext>
 - Green With Envy: <https://flathub.org/apps/details/com.leinardi.gwe>
-- OBS: <https://flathub.org/apps/details/com.obsproject.Studio>
-- RawTherapee: <https://flathub.org/apps/details/com.rawtherapee.RawTherapee>
+- OBS Studio: <https://flathub.org/apps/details/com.obsproject.Studio>
 - Audacity: <https://flathub.org/apps/details/org.audacityteam.Audacity>
 - GIMP: <https://flathub.org/apps/details/org.gimp.GIMP>
 - Kdenlive: <https://flathub.org/apps/details/org.kde.kdenlive>
+- Foliate: <https://flathub.org/apps/details/com.github.johnfactotum.Foliate>
 - LibreOffice: <https://flathub.org/apps/details/org.libreoffice.LibreOffice>
 - Remmina: <https://flathub.org/apps/details/org.remmina.Remmina>
 - Cawbird: <https://flathub.org/apps/details/uk.co.ibboard.cawbird>
-- DarkTable: <https://flathub.org/apps/details/org.darktable.Darktable>
+- Planner: <https://flathub.org/apps/details/com.github.alainm23.planner>
 - Slack: <https://flathub.org/apps/details/com.slack.Slack>
 - Zoom: <https://flathub.org/apps/details/us.zoom.Zoom>
 - Skype: <https://flathub.org/apps/details/com.skype.Client>
 - Viber: <https://flathub.org/apps/details/com.viber.Viber>
+- _DarkTable_: <https://flathub.org/apps/details/org.darktable.Darktable> (Flatpak not fully compatible with Plank)
 
 ```sh
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
@@ -228,45 +252,32 @@ flatpak install flathub \
   com.bitwarden.desktop \
   com.calibre_ebook.calibre \
   com.getpostman.Postman \
+  com.github.alainm23.planner \
+  com.github.johnfactotum.Foliate \
   com.github.marktext.marktext \
   com.leinardi.gwe \
   com.obsproject.Studio \
-  com.rawtherapee.RawTherapee \
+  com.skype.Client \
+  com.slack.Slack \
+  com.viber.Viber \
   org.audacityteam.Audacity \
   org.gimp.GIMP \
   org.kde.kdenlive \
   org.libreoffice.LibreOffice \
   org.remmina.Remmina \
   uk.co.ibboard.cawbird \
-  org.darktable.Darktable \
-  com.slack.Slack \
-  flathub us.zoom.Zoom \
-  flathub com.skype.Client \
-  com.viber.Viber \
+  us.zoom.Zoom \
   -y
 ```
 
 ### DEBs Software
 
-- Ulauncher <https://ulauncher.io/>
 - VisualStudio Code: <https://code.visualstudio.com/>
 - Beyond Compare: <https://scootersoftware.com>
+- Darktable: <https://software.opensuse.org/download.html?project=graphics:darktable&package=darktable>
 - DisplayCal: <https://displaycal.net/>
 - MullvadVPN: <https://mullvad.net/en/>
 - Kubefwd: <https://github.com/txn2/kubefwd/releases>
-
-### Brave Browser
-
-<https://brave.com/download/>
-<https://brave-browser.readthedocs.io/en/latest/installing-brave.html#linux>
-
-```sh
-sudo apt install -y apt-transport-https curl
-curl -s https://brave-browser-apt-release.s3.brave.com/brave-core.asc | sudo apt-key --keyring /etc/apt/trusted.gpg.d/brave-browser-release.gpg add -
-echo "deb [arch=amd64] https://brave-browser-apt-release.s3.brave.com/ stable main" | sudo tee /etc/apt/sources.list.d/brave-browser-release.list
-sudo apt update
-sudo apt install -y brave-browser
-```
 
 ### Firefox Browser
 
@@ -279,6 +290,11 @@ sudo apt install -y brave-browser
   - Fixed Zoom
   - Enchancer for YouTube
   - h264ify
+
+### Ungoogled Chromium
+
+<https://github.com/Eloston/ungoogled-chromium>
+<https://software.opensuse.org/download/package?package=ungoogled-chromium&project=home:ungoogled_chromium>
 
 ### GitHub
 
@@ -354,11 +370,11 @@ sudo apt install -y apt-transport-https
 wget https://dot.net/v1/dotnet-install.sh
 chmod +x ./dotnet-install.sh
 
-sudo ./dotnet-install.sh --version 3.1.103 --install-dir /opt/dotnet
-# sudo ./dotnet-install.sh --version 3.1.201 --install-dir /opt/dotnet
+sudo ./dotnet-install.sh --version 3.1.105 --install-dir /opt/dotnet
+sudo ./dotnet-install.sh --version 3.1.301 --install-dir /opt/dotnet
 
 echo """
-export PATH="$PATH:/opt/dotnet/:$HOME/.dotnet/tools"
+export PATH="\$PATH:/opt/dotnet:\$HOME/.dotnet/tools"
 export DOTNET_ROOT=/opt/dotnet
 export DOTNET_CLI_TELEMETRY_OPTOUT=1
 """ | sudo tee /etc/profile.d/dotnet.sh
@@ -388,10 +404,10 @@ sudo apt install -y powershell
 ### NodeJS+NPM
 
 ```sh
-wget https://nodejs.org/dist/v12.16.3/node-v12.16.3-linux-x64.tar.xz
-tar xvf node-v12.16.3-linux-x64.tar.xz
+wget https://nodejs.org/dist/v12.18.0/node-v12.18.0-linux-x64.tar.xz
+tar xvf node-v12.18.0-linux-x64.tar.xz
 
-sudo mv node-v12.16.3-linux-x64 /opt/nodejs
+sudo mv node-v12.18.0-linux-x64 /opt/nodejs
 echo 'export PATH="$PATH:/opt/nodejs/bin"' | sudo tee /etc/profile.d/nodejs.sh
 ```
 
@@ -496,6 +512,33 @@ Download release, uncompress, move `helm` to `~/.local.bin`:
 mv linux-amd64/helm ~/.local/bin
 ```
 
+### Virtualization
+
+- KVM
+- QEMU
+- Libvitr
+- Virt-Manager
+
+Check compatibility:
+
+```sh
+LC_ALL=C lscpu | grep Virtualization
+lsmod | grep kvm
+```
+
+```sh
+sudo apt install \
+  qemu qemu-kvm \
+  libvirt-bin \
+  bridge-utils \
+  virtinst \
+  virt-manager
+  -y
+
+sudo usermod -aG libvirt $USER
+sudo usermod -aG kvm $USER
+```
+
 ### JetBrains IDEs
 
 - Rider: <https://www.jetbrains.com/rider/download> -> `/opt/jetbrains_rider`
@@ -543,19 +586,7 @@ mv PragmataPro ~/.local/share/fonts/PragmataPro
 fc-cache -f -r -v
 ```
 
-### Typora
-
-<https://typora.io/>
-
-```sh
-# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
-wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
-sudo add-apt-repository -y 'deb https://typora.io/linux ./'
-sudo apt update
-sudo apt install -y typora
-```
-
-### Todoist
+## Todoist
 
 <https://github.com/KryDos/todoist-linux/releases>
 
@@ -571,16 +602,6 @@ Use icon `icons/notion.png`.
 <https://github.com/Automattic/simplenote-electron/releases>
 
 Alternatively, use `Webpin` to create <https://app.simplenote.com/> webapp shortcut.
-
-### Stacer
-
-<https://github.com/oguzhaninan/Stacer>
-
-```sh
-sudo add-apt-repository -y ppa:oguzhaninan/stacer
-sudo apt update
-sudo apt install -y stacer
-```
 
 ### GeekBench
 
@@ -710,3 +731,29 @@ From the drivers directory, run
 ```sh
 ./amdgpu-install -y --opencl=pal,legacy --headless --no-dkms
 ```
+
+### Stacer
+
+<https://github.com/oguzhaninan/Stacer>
+
+```sh
+sudo add-apt-repository -y ppa:oguzhaninan/stacer
+sudo apt update
+sudo apt install -y stacer
+```
+
+### Typora
+
+<[Typora — a markdown editor, markdown reader.](https://typora.io/)>
+
+```sh
+# sudo apt-key adv --keyserver keyserver.ubuntu.com --recv-keys BA300B7755AFCFAE
+wget -qO - https://typora.io/linux/public-key.asc | sudo apt-key add -
+sudo add-apt-repository -y "deb https://typora.io/linux ./"
+sudo apt update
+sudo apt install -y typora
+```
+
+### Ulauncher
+
+<https://ulauncher.io/>
